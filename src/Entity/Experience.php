@@ -32,6 +32,7 @@ class Experience
      */
     private $date_from;
 
+
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -75,9 +76,9 @@ class Experience
         return $this->date_from;
     }
 
-    public function setDateFrom(string $date_from): self
+    public function setDateFrom(string $dateFrom): self
     {
-        $this->date_from = $date_from;
+        $this->date_from = $dateFrom;
 
         return $this;
     }
@@ -87,9 +88,9 @@ class Experience
         return $this->date_to;
     }
 
-    public function setDateTo(string $date_to): self
+    public function setDateTo(string $dateTo): self
     {
-        $this->date_to = $date_to;
+        $this->date_to = $dateTo;
 
         return $this;
     }
@@ -99,9 +100,9 @@ class Experience
         return $this->list_one;
     }
 
-    public function setListOne(string $list_one): self
+    public function setListOne(string $listOne): self
     {
-        $this->list_one = $list_one;
+        $this->list_one = $listOne;
 
         return $this;
     }
@@ -111,9 +112,9 @@ class Experience
         return $this->list_two;
     }
 
-    public function setListTwo(string $list_two): self
+    public function setListTwo(string $listTwo): self
     {
-        $this->list_two = $list_two;
+        $this->list_two = $listTwo;
 
         return $this;
     }
@@ -123,9 +124,9 @@ class Experience
         return $this->list_three;
     }
 
-    public function setListThree(string $list_three): self
+    public function setListThree(string $listThree): self
     {
-        $this->list_three = $list_three;
+        $this->list_three = $listThree;
 
         return $this;
     }
