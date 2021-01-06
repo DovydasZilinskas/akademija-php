@@ -1,0 +1,15 @@
+{
+
+	"recommendations": [
+		"ms-vscode-remote.remote-containers",
+		"felixfbecker.php-debug",
+		"bmewburn.vscode-intelephense-client",
+		"valeryanm.vscode-phpsab",
+		"mehedidracula.php-namespace-resolver",
+		"sevavietl.php-files",
+		"mehedidracula.php-constructor",
+		"phproberto.vscode-php-getters-setters",
+		"joelwmale.vscode-codeception"
+	],
+	
+}
