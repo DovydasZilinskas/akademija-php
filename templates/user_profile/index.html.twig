@@ -23,8 +23,8 @@
                 <td>{{ user_profile.surname }}</td>
                 <td>{{ user_profile.age }}</td>
                 <td>
-                    <a href="{{ path('user_profile_show', {'id': user_profile.id}) }}">show</a>
-                    <a href="{{ path('user_profile_edit', {'id': user_profile.id}) }}">edit</a>
+                    show
+
                 </td>
             </tr>
         {% else %}
@@ -35,5 +35,43 @@
         </tbody>
     </table>
 
-    <a href="{{ path('user_profile_new') }}">Create new</a>
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Position</th>
+                <th>Company</th>
+                <th>date_from</th>
+                <th>date_to</th>
+                <th>List</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for experience in experiences %}
+            <tr>
+                <td>{{ experience.id }}</td>
+                <td>{{ experience.position }}</td>
+                <td>{{ experience.company }}</td>
+                <td>{{ experience.date_from }}</td>
+                <td>{{ experience.date_to }}</td>
+                <td>
+                    <ul>
+                        <li>{{ experience.list_one }}</li>
+                        <li>{{ experience.list_two }}</li>
+                        <li>{{ experience.list_three }}</li>
+                    </ul>
+                </td>
+                <td>
+                    show
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}
