@@ -26,7 +26,7 @@ class WorkExperienceController extends AbstractController
             $entityManager->persist($workExperience);
             $entityManager->flush();
 
-            return $this->redirectToRoute('work_experience_index');
+            return $this->redirectToRoute('user_profile_index');
         }
 
         return $this->render('work_experience/new.html.twig', [
@@ -52,7 +52,7 @@ class WorkExperienceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('work_experience_index');
+            return $this->redirectToRoute('user_profile_index');
         }
 
         return $this->render('work_experience/edit.html.twig', [
@@ -70,6 +70,6 @@ class WorkExperienceController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('work_experience_index');
+        return $this->redirectToRoute('user_profile_index');
     }
 }

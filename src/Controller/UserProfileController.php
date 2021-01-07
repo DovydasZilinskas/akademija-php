@@ -29,27 +29,6 @@ class UserProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'user_profile_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
-    {
-        $userProfile = new UserProfile();
-        $form = $this->createForm(UserProfileType::class, $userProfile);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($userProfile);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('user_profile_index');
-        }
-
-        return $this->render('user_profile/new.html.twig', [
-            'user_profile' => $userProfile,
-            'form' => $form->createView(),
-        ]);
-    }
-
     #[Route('/{id}', name: 'user_profile_show', methods: ['GET'])]
     public function show(UserProfile $userProfile): Response
     {

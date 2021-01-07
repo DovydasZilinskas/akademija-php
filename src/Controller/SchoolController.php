@@ -26,7 +26,7 @@ class SchoolController extends AbstractController
             $entityManager->persist($school);
             $entityManager->flush();
 
-            return $this->redirectToRoute('school_index');
+            return $this->redirectToRoute('user_profile_index');
         }
 
         return $this->render('school/new.html.twig', [
@@ -52,7 +52,7 @@ class SchoolController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('school_index');
+            return $this->redirectToRoute('user_profile_index');
         }
 
         return $this->render('school/edit.html.twig', [
@@ -70,6 +70,6 @@ class SchoolController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('school_index');
+        return $this->redirectToRoute('user_profile_index');
     }
 }
