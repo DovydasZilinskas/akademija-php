@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\UserProfile;
-use App\Entity\Experience;
+use App\Entity\School;
+use App\Entity\WorkExperience;
 use App\Form\UserProfileType;
+use App\Form\SchoolType;
+use App\Form\WorkExperienceType;
 use App\Repository\UserProfileRepository;
-use App\Repository\ExperienceRepository;
+use App\Repository\WorkExperienceRepository;
+use App\Repository\SchoolRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,72 +20,71 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserProfileController extends AbstractController
 {
     #[Route('/', name: 'user_profile_index', methods: ['GET'])]
-    public function index(UserProfileRepository $userProfileRepository, ExperienceRepository $experienceRepository): Response
+    public function index(UserProfileRepository $userProfileRepository, WorkExperienceRepository $workExperienceRepository, SchoolRepository $schoolRepository): Response
     {
         return $this->render('user_profile/index.html.twig', [
             'user_profiles' => $userProfileRepository->findAll(),
-            'experiences' => $experienceRepository->findAll(),
+            'work_experiences' => $workExperienceRepository->findAll(),
+            'schools' => $schoolRepository->findAll(),
         ]);
     }
 
+    #[Route('/new', name: 'user_profile_new', methods: ['GET', 'POST'])]
+    public function new(Request $request): Response
+    {
+        $userProfile = new UserProfile();
+        $form = $this->createForm(UserProfileType::class, $userProfile);
+        $form->handleRequest($request);
 
-    // #[Route('/new', name: 'user_profile_new', methods: ['GET', 'POST'])]
-    // public function new(Request $request): Response
-    // {
-    //     $userProfile = new UserProfile();
-    //     $form = $this->createForm(UserProfileType::class, $userProfile);
-    //     $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($userProfile);
+            $entityManager->flush();
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $entityManager = $this->getDoctrine()->getManager();
-    //         $entityManager->persist($userProfile);
-    //         $entityManager->flush();
+            return $this->redirectToRoute('user_profile_index');
+        }
 
-    //         return $this->redirectToRoute('user_profile_index');
-    //     }
+        return $this->render('user_profile/new.html.twig', [
+            'user_profile' => $userProfile,
+            'form' => $form->createView(),
+        ]);
+    }
 
-    //     return $this->render('user_profile/new.html.twig', [
-    //         'user_profile' => $userProfile,
-    //         'form' => $form->createView(),
-    //     ]);
-    // }
+    #[Route('/{id}', name: 'user_profile_show', methods: ['GET'])]
+    public function show(UserProfile $userProfile): Response
+    {
+        return $this->render('user_profile/show.html.twig', [
+            'user_profile' => $userProfile,
+        ]);
+    }
 
-    // #[Route('/{id}', name: 'user_profile_show', methods: ['GET'])]
-    // public function show(UserProfile $userProfile, Experience $experience): Response
-    // {
-    //     return $this->render('user_profile/show.html.twig', [
-    //         'user_profile' => $userProfile,
-    //         'experience' => $experience,
-    //     ]);
-    // }
+    #[Route('/{id}/edit', name: 'user_profile_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, UserProfile $userProfile): Response
+    {
+        $form = $this->createForm(UserProfileType::class, $userProfile);
+        $form->handleRequest($request);
 
-    // #[Route('/{id}/edit', name: 'user_profile_edit', methods: ['GET', 'POST'])]
-    // public function edit(Request $request, UserProfile $userProfile): Response
-    // {
-    //     $form = $this->createForm(UserProfileType::class, $userProfile);
-    //     $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('user_profile_index');
+        }
 
-    //         return $this->redirectToRoute('user_profile_index');
-    //     }
+        return $this->render('user_profile/edit.html.twig', [
+            'user_profile' => $userProfile,
+            'form' => $form->createView(),
+        ]);
+    }
 
-    //     return $this->render('user_profile/edit.html.twig', [
-    //         'user_profile' => $userProfile,
-    //         'form' => $form->createView(),
-    //     ]);
-    // }
+    #[Route('/{id}', name: 'user_profile_delete', methods: ['DELETE'])]
+    public function delete(Request $request, UserProfile $userProfile): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $userProfile->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($userProfile);
+            $entityManager->flush();
+        }
 
-    // #[Route('/{id}', name: 'user_profile_delete', methods: ['DELETE'])]
-    // public function delete(Request $request, UserProfile $userProfile): Response
-    // {
-    //     if ($this->isCsrfTokenValid('delete'.$userProfile->getId(), $request->request->get('_token'))) {
-    //         $entityManager = $this->getDoctrine()->getManager();
-    //         $entityManager->remove($userProfile);
-    //         $entityManager->flush();
-    //     }
-
-    //     return $this->redirectToRoute('user_profile_index');
-    // }
+        return $this->redirectToRoute('user_profile_index');
+    }
 }

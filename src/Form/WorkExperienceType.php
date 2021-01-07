@@ -2,26 +2,30 @@
 
 namespace App\Form;
 
-use App\Entity\UserProfile;
+use App\Entity\WorkExperience;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserProfile1Type extends AbstractType
+class WorkExperienceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('surname')
-            ->add('age')
+            ->add('position')
+            ->add('company')
+            ->add('dateFrom')
+            ->add('dateTo')
+            ->add('listOne')
+            ->add('listTwo')
+            ->add('listThree')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => UserProfile::class,
+            'data_class' => WorkExperience::class,
         ]);
     }
 }

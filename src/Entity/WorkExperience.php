@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ExperienceRepository;
+use App\Repository\WorkExperienceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ExperienceRepository::class)
+ * @ORM\Entity(repositoryClass=WorkExperienceRepository::class)
  */
-class Experience
+class WorkExperience
 {
     /**
      * @ORM\Id
@@ -28,36 +28,46 @@ class Experience
     private $company;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="date")
      */
-    private $date_from;
+    private $dateFrom;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateTo;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $date_to;
+    private $listOne;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $list_one;
+    private $listTwo;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $list_two;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $list_three;
+    private $listThree;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(string $position): self
+    {
+        $this->position = $position;
+
+        return $this;
+    }
 
     public function getCompany(): ?string
     {
@@ -71,74 +81,62 @@ class Experience
         return $this;
     }
 
-    public function getDateFrom(): ?string
+    public function getDateFrom(): ?\DateTimeInterface
     {
-        return $this->date_from;
+        return $this->dateFrom;
     }
 
-    public function setDateFrom(string $dateFrom): self
+    public function setDateFrom(\DateTimeInterface $dateFrom): self
     {
-        $this->date_from = $dateFrom;
+        $this->dateFrom = $dateFrom;
 
         return $this;
     }
 
-    public function getDateTo(): ?string
+    public function getDateTo(): ?\DateTimeInterface
     {
-        return $this->date_to;
+        return $this->dateTo;
     }
 
-    public function setDateTo(string $dateTo): self
+    public function setDateTo(\DateTimeInterface $dateTo): self
     {
-        $this->date_to = $dateTo;
+        $this->dateTo = $dateTo;
 
         return $this;
     }
 
     public function getListOne(): ?string
     {
-        return $this->list_one;
+        return $this->listOne;
     }
 
     public function setListOne(string $listOne): self
     {
-        $this->list_one = $listOne;
+        $this->listOne = $listOne;
 
         return $this;
     }
 
     public function getListTwo(): ?string
     {
-        return $this->list_two;
+        return $this->listTwo;
     }
 
     public function setListTwo(string $listTwo): self
     {
-        $this->list_two = $listTwo;
+        $this->listTwo = $listTwo;
 
         return $this;
     }
 
     public function getListThree(): ?string
     {
-        return $this->list_three;
+        return $this->listThree;
     }
 
     public function setListThree(string $listThree): self
     {
-        $this->list_three = $listThree;
-
-        return $this;
-    }
-
-    public function getPosition(): ?string
-    {
-        return $this->position;
-    }
-
-    public function setPosition(string $position): self
-    {
-        $this->position = $position;
+        $this->listThree = $listThree;
 
         return $this;
     }

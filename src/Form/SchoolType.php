@@ -2,26 +2,30 @@
 
 namespace App\Form;
 
-use App\Entity\UserProfile;
+use App\Entity\School;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserProfile1Type extends AbstractType
+class SchoolType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('surname')
-            ->add('age')
+            ->add('institution')
+            ->add('title')
+            ->add('dateFrom')
+            ->add('dateTo')
+            ->add('listOne')
+            ->add('listTwo')
+            ->add('ListThree')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => UserProfile::class,
+            'data_class' => School::class,
         ]);
     }
 }
