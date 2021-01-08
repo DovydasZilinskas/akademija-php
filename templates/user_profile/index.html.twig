@@ -4,22 +4,21 @@
 
 {% block body %}
     <h1>UserProfile</h1>
+    <a href="{{ path('contact') }}"><h4>Contact<h4></a>
 
     <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Age</th>
-                <th>actions</th>
-            </tr>
-        </thead>
         <tbody>
         {% for user_profile in user_profiles %}
             <tr>
                 <td>{{ user_profile.name }}</td>
+                </tr>
+                <tr>
                 <td>{{ user_profile.surname }}</td>
-                <td>{{ user_profile.age }}</td>
+                </tr>
+                <tr>
+                <td>Age {{ user_profile.age }}</td>
+                </tr>
+                <tr>
                 <td>
                     <a href="{{ path('user_profile_edit', {'id': user_profile.id}) }}">edit</a>
                 </td>
@@ -35,33 +34,29 @@
     <h1>Experience Tab</h1>
 
     <table class="table">
-        <thead>
-            <tr>
-                <th>Position</th>
-                <th>Company</th>
-                <th>DateFrom</th>
-                <th>DateTo</th>
-                <th>ListOne</th>
-                <th>ListTwo</th>
-                <th>ListThree</th>
-                <th>actions</th>
-            </tr>
-        </thead>
         <tbody>
         {% for work_experience in work_experiences %}
             <tr>
-                <td>{{ work_experience.position }}</td>
-                <td>{{ work_experience.company }}</td>
-                <td>{{ work_experience.dateFrom ? work_experience.dateFrom|date('Y-m-d') : '' }}</td>
-                <td>{{ work_experience.dateTo ? work_experience.dateTo|date('Y-m-d') : '' }}</td>
-                <td>{{ work_experience.listOne }}</td>
-                <td>{{ work_experience.listTwo }}</td>
-                <td>{{ work_experience.listThree }}</td>
-                <td>
+                <td><h3>{{ work_experience.position }},</h3></td>
+                </tr>
+                <tr>
+                <td><h4>{{ work_experience.company }}</h4></td>
+                <td>From {{ work_experience.dateFrom ? work_experience.dateFrom|date('Y-m-d') : '' }} -</td>
+                <td>To {{ work_experience.dateTo ? work_experience.dateTo|date('Y-m-d') : '' }}</td>
+                                <td>
                     <a href="{{ path('work_experience_show', {'id': work_experience.id}) }}">show</a>
                     <a href="{{ path('work_experience_edit', {'id': work_experience.id}) }}">edit</a>
                 </td>
-            </tr>
+                </tr>
+                <tr>
+                <td>
+                    <ul>
+                        <li>{{ work_experience.listOne }}</li>
+                        <li>{{ work_experience.listTwo }}</li>
+                        <li>{{ work_experience.listThree }}</li>
+                    </ul>
+                </td>
+                </tr>
         {% else %}
             <tr>
                 <td colspan="9">no records found</td>
@@ -78,18 +73,6 @@
         <h1>Education Tab</h1>
 
     <table class="table">
-        <thead>
-            <tr>
-                <th>Institution</th>
-                <th>Title</th>
-                <th>DateFrom</th>
-                <th>DateTo</th>
-                <th>ListOne</th>
-                <th>ListTwo</th>
-                <th>ListThree</th>
-                <th>actions</th>
-            </tr>
-        </thead>
         <tbody>
         {% for school in schools %}
             <tr>

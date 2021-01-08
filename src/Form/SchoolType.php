@@ -18,8 +18,7 @@ class SchoolType extends AbstractType
             ->add('dateTo')
             ->add('listOne')
             ->add('listTwo')
-            ->add('ListThree')
-        ;
+            ->add('ListThree');
     }
 
     public function configureOptions(OptionsResolver $resolver)
