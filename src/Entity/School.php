@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SchoolRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,42 +16,47 @@ class School
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $institution;
+    private string $institution;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $dateFrom;
+    private DateTime $dateFrom;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $dateTo;
+    private DateTime $dateTo;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $listOne;
+    private string $listOne;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $listTwo;
+    private string $listTwo;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $ListThree;
+    private string $ListThree;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=UserProfile::class, inversedBy="Education")
+     */
+    private $userProfile;
 
     public function getId(): ?int
     {
@@ -137,6 +143,18 @@ class School
     public function setListThree(string $ListThree): self
     {
         $this->ListThree = $ListThree;
+
+        return $this;
+    }
+
+    public function getUserProfile(): ?UserProfile
+    {
+        return $this->userProfile;
+    }
+
+    public function setUserProfile(?UserProfile $userProfile): self
+    {
+        $this->userProfile = $userProfile;
 
         return $this;
     }

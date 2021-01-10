@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\WorkExperienceRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,42 +16,47 @@ class WorkExperience
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $position;
+    private string $position;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $company;
+    private string $company;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $dateFrom;
+    private DateTime $dateFrom;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $dateTo;
+    private DateTime $dateTo;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $listOne;
+    private string $listOne;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $listTwo;
+    private string $listTwo;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $listThree;
+    private string $listThree;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=UserProfile::class, inversedBy="work")
+     */
+    private $userProfile;
 
     public function getId(): ?int
     {
@@ -137,6 +143,18 @@ class WorkExperience
     public function setListThree(string $listThree): self
     {
         $this->listThree = $listThree;
+
+        return $this;
+    }
+
+    public function getUserProfile(): ?UserProfile
+    {
+        return $this->userProfile;
+    }
+
+    public function setUserProfile(?UserProfile $userProfile): self
+    {
+        $this->userProfile = $userProfile;
 
         return $this;
     }
