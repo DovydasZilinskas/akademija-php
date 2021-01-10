@@ -20,7 +20,6 @@ class ContactController extends AbstractController
 
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $contactFormData = $form->getData();
@@ -36,15 +35,10 @@ class ContactController extends AbstractController
                 );
             $mailer->send($message);
 
-
-
-
             $this->addFlash('success', 'Your message has been sent');
 
             return $this->redirectToRoute('user_profile_index');
         }
-
-
 
         return $this->render('contact/index.html.twig', [
             'form' => $form->createView()
