@@ -18,7 +18,7 @@ class UserFixtures extends Fixture
             ->setName('Dovydas')
             ->setSurname('Zilinskas')
             ->setAge(mt_rand(10, 100));
-        $this->addReference(self::USER_ID, $userProfile);
+        $this->addReference($userProfile->getName(), $userProfile);
         $manager->persist($userProfile);
 
         $manager->flush();

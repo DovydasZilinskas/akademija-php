@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\WorkExperience;
+use App\Entity\UserProfile;
 use App\Form\WorkExperienceType;
 use App\Repository\WorkExperienceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +23,8 @@ class WorkExperienceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getDoctrine()->getRepository(UserProfile::class)->findOneBy([]);
+            $workExperience->setUserProfile($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($workExperience);
             $entityManager->flush();

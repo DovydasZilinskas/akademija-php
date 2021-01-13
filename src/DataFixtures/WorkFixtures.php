@@ -6,8 +6,9 @@ use App\Entity\WorkExperience;
 use App\DataFixtures\UserFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class WorkFixtures extends Fixture
+class WorkFixtures extends Fixture implements DependentFixtureInterface
 {
 
     public function load(ObjectManager $manager)
@@ -22,10 +23,15 @@ class WorkFixtures extends Fixture
                 ->setListOne('List item 1 ' . $i)
                 ->setListTwo('List item 2 ' . $i)
                 ->setListThree('List item 3 ' . $i)
-                ->setUserProfile($this->getReference(UserFixtures::USER_ID));
+                ->setUserProfile($this->getReference('user-id'));
             $manager->persist($workExperience);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [UserFixtures::class];
     }
 }

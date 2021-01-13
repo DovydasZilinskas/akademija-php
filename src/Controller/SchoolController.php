@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\School;
+use App\Entity\UserProfile;
 use App\Form\SchoolType;
 use App\Repository\SchoolRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/school')]
 class SchoolController extends AbstractController
 {
+    #[Route('/', name: 'school_index', methods: ['GET'])]
+    public function index(SchoolRepository $schoolRepository): Response
+    {
+        return $this->render('school/index.html.twig', [
+            'schools' => $schoolRepository->findAll(),
+        ]);
+    }
 
     #[Route('/new', name: 'school_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
@@ -22,6 +30,8 @@ class SchoolController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getDoctrine()->getRepository(UserProfile::class)->findOneBy([]);
+            $school->setUserProfile($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($school);
             $entityManager->flush();

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\School;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +20,7 @@ class SchoolType extends AbstractType
             ->add('listOne')
             ->add('listTwo')
             ->add('ListThree');
+        // ->add('userProfile');
     }
 
     public function configureOptions(OptionsResolver $resolver)

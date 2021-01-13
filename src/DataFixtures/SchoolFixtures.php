@@ -23,7 +23,7 @@ class SchoolFixtures extends Fixture implements DependentFixtureInterface
                 ->setListOne('List item 1 ' . $i)
                 ->setListTwo('List item 2 ' . $i)
                 ->setListThree('List item 3 ' . $i)
-                ->setUserProfile($this->getReference(UserFixtures::USER_ID));
+                ->setUserProfile($this->getReference('user-id'));
             $manager->persist($school);
         }
 
@@ -32,8 +32,6 @@ class SchoolFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies()
     {
-        return array(
-            UserFixtures::class,
-        );
+        return [UserFixtures::class];
     }
 }
