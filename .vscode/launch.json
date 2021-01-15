@@ -10,14 +10,18 @@
             "request": "launch",
             "port": 9000,
             "pathMappings": {
-                "/app": "${workspaceRoot}",
+                "/var/www/html": "${workspaceFolder}"
             }
         },
         {
             "name": "Launch currently open script",
             "type": "php",
             "request": "launch",
-            "args": ["--no-coverage", "--filter", "${fileBasenameNoExtension}"],
+            "args": [
+                "--no-coverage",
+                "--filter",
+                "${fileBasenameNoExtension}"
+            ],
             "program": "${workspaceRoot}/vendor/bin/phpunit",
             "cwd": "${workspaceRoot}",
             "port": 9000
