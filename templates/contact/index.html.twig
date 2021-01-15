@@ -3,22 +3,17 @@
 
 {% block body %}
 <div>
+    {{ form_start(form) }}
     <div>
-{{ form_start(form) }}
-    {{ form_row(form.fullName) }}
+        {{ form_row(form.fullName) }}
+    </div>
+    <div>
+        {{ form_row(form.email) }}
+    </div>
+    <div>
+        {{ form_row(form.message) }}
+    </div>
+    {{ form_end(form) }}
 </div>
-<div>
-    {{ form_row(form.email) }}
-</div>
-<div>
-    {{ form_row(form.message) }}
-</div>
-
-<div><button type="submit" value="Send">Send
-    </button>
-</div>
-{{ form_end(form) }}
-</div>
-    <a href="{{ path('user_profile_index') }}">back to list</a>
-</div>
+<a href="{{ path('user_profile_index') }}">back to list</a>
 {% endblock %}

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\WorkExperience;
 use App\Entity\UserProfile;
 use App\Form\WorkExperienceType;
-use App\Repository\WorkExperienceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
