@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
+use App\Model\ContactModel;
+use App\Service\ContactService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mime\Email;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
@@ -14,25 +14,16 @@ class ContactController extends AbstractController
 
     #[Route("/contact", name: "contact")]
     
-    public function index(Request $request, MailerInterface $mailer)
+    public function index(Request $request, ContactService $contactService)
     {
-        $form = $this->createForm(ContactType::class);
+        $contact = new ContactModel();
+
+        $form = $this->createForm(ContactType::class, $contact);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $contactFormData = $form->getData();
-
-            $message = (new Email())
-                ->from('info@info.info')
-                ->to($contactFormData['email'])
-                ->subject('You got mail from your portfolio page')
-                ->text(
-                    'Sender : ' . $contactFormData['email'] . \PHP_EOL .
-                        $contactFormData['message'],
-                    'text/plain'
-                );
-            $mailer->send($message);
+            $contactService->sendMessage($contact);
 
             $this->addFlash('success', 'Your message has been sent');
 
