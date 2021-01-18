@@ -3,11 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\UserProfile;
-use App\Entity\School;
-use App\Entity\WorkExperience;
 use App\Form\UserProfileType;
-use App\Form\SchoolType;
-use App\Form\WorkExperienceType;
 use App\Repository\UserProfileRepository;
 use App\Repository\WorkExperienceRepository;
 use App\Repository\SchoolRepository;

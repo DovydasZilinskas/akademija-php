@@ -51,7 +51,7 @@ class School
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $ListThree;
+    private string $listThree;
 
     /**
      * @ORM\ManyToOne(targetEntity=UserProfile::class, inversedBy="Education")
@@ -137,12 +137,12 @@ class School
 
     public function getListThree(): ?string
     {
-        return $this->ListThree;
+        return $this->listThree;
     }
 
-    public function setListThree(string $ListThree): self
+    public function setListThree(string $listThree): self
     {
-        $this->ListThree = $ListThree;
+        $this->listThree = $listThree;
 
         return $this;
     }
