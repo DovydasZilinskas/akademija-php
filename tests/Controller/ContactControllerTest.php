@@ -16,7 +16,7 @@ class ContactControllerTest extends WebTestCase
 
         $form = $crawler->filter('form')->form();
 
-        $form->setValues(['contact[fullName]' => 'Dovydas', 'contact[email]' => 'test@test.ru', 'contact[message]' => 'TEST']);
+        $form->setValues(['contact[fullName]' => 'Dovydas', 'contact[email]' => 'test@test', 'contact[message]' => 'TEST']);
 
         $crawler = $client->submit($form);
 
@@ -25,7 +25,7 @@ class ContactControllerTest extends WebTestCase
         $email = $this->getMailerMessage(0);
 
         $this->assertEmailHeaderSame($email, 'From', 'info@info.info');
-        $this->assertEmailHeaderSame($email, 'To', 'test@test.ru');
+        $this->assertEmailHeaderSame($email, 'To', 'test@test');
 
         $this->assertEmailTextBodyContains($email, 'TEST');
     }
