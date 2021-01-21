@@ -16,7 +16,7 @@ class WorkExperienceType extends AbstractType
         $builder
             ->add('position', TextType::class)
             ->add('company', TextType::class)
-            ->add('dateFrom', TextType::class)
+            ->add('dateFrom', DateType::class)
             ->add('dateTo', DateType::class)
             ->add('listOne', TextType::class)
             ->add('listTwo', TextType::class)
