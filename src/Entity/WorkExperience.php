@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\WorkExperienceRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,24 +41,19 @@ class WorkExperience
     private DateTime $dateTo;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $listOne;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $listTwo;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $listThree;
-
-    /**
      * @ORM\ManyToOne(targetEntity=UserProfile::class, inversedBy="work")
      */
     private $userProfile;
+
+    /**
+     * @ORM\OneToMany(targetEntity=WorkDuty::class, mappedBy="workExperience", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $duty;
+
+    public function __construct()
+    {
+        $this->duty = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -111,42 +108,6 @@ class WorkExperience
         return $this;
     }
 
-    public function getListOne(): ?string
-    {
-        return $this->listOne;
-    }
-
-    public function setListOne(string $listOne): self
-    {
-        $this->listOne = $listOne;
-
-        return $this;
-    }
-
-    public function getListTwo(): ?string
-    {
-        return $this->listTwo;
-    }
-
-    public function setListTwo(string $listTwo): self
-    {
-        $this->listTwo = $listTwo;
-
-        return $this;
-    }
-
-    public function getListThree(): ?string
-    {
-        return $this->listThree;
-    }
-
-    public function setListThree(string $listThree): self
-    {
-        $this->listThree = $listThree;
-
-        return $this;
-    }
-
     public function getUserProfile(): ?UserProfile
     {
         return $this->userProfile;
@@ -155,6 +116,36 @@ class WorkExperience
     public function setUserProfile(?UserProfile $userProfile): self
     {
         $this->userProfile = $userProfile;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WorkDuty[]
+     */
+    public function getDuty(): Collection
+    {
+        return $this->duty;
+    }
+
+    public function addDuty(WorkDuty $duty): self
+    {
+        if (!$this->duty->contains($duty)) {
+            $this->duty[] = $duty;
+            $duty->setWorkExperience($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDuty(WorkDuty $duty): self
+    {
+        if ($this->duty->removeElement($duty)) {
+            // set the owning side to null (unless already changed)
+            if ($duty->getWorkExperience() === $this) {
+                $duty->setWorkExperience(null);
+            }
+        }
 
         return $this;
     }

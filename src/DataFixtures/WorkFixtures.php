@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\WorkExperience;
 use App\DataFixtures\UserFixtures;
+use App\Entity\WorkDuty;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -15,15 +16,16 @@ class WorkFixtures extends Fixture implements DependentFixtureInterface
     {
         for ($i = 0; $i < 5; $i++) {
             $workExperience = new WorkExperience();
+            $duty = new WorkDuty();
             $workExperience
                 ->setPosition('Position ' . $i)
                 ->setCompany('Company ' . $i)
                 ->setDateFrom(new \DateTime())
                 ->setDateTo(new \DateTime())
-                ->setListOne('List item 1 ' . $i)
-                ->setListTwo('List item 2 ' . $i)
-                ->setListThree('List item 3 ' . $i)
-                ->setUserProfile($this->getReference('user-id'));
+                ->setUserProfile($this->getReference('user-id'))
+                ->addDuty($duty);
+            $duty
+                ->setDuty('Work duty no ' . $i);
             $manager->persist($workExperience);
         }
 

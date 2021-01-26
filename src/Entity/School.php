@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\SchoolRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,24 +41,19 @@ class School
     private DateTime $dateTo;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $listOne;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $listTwo;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $listThree;
-
-    /**
      * @ORM\ManyToOne(targetEntity=UserProfile::class, inversedBy="Education")
      */
     private $userProfile;
+
+    /**
+     * @ORM\OneToMany(targetEntity=SchoolDuty::class, mappedBy="school", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $duty;
+
+    public function __construct()
+    {
+        $this->duty = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -111,42 +108,6 @@ class School
         return $this;
     }
 
-    public function getListOne(): ?string
-    {
-        return $this->listOne;
-    }
-
-    public function setListOne(string $listOne): self
-    {
-        $this->listOne = $listOne;
-
-        return $this;
-    }
-
-    public function getListTwo(): ?string
-    {
-        return $this->listTwo;
-    }
-
-    public function setListTwo(string $listTwo): self
-    {
-        $this->listTwo = $listTwo;
-
-        return $this;
-    }
-
-    public function getListThree(): ?string
-    {
-        return $this->listThree;
-    }
-
-    public function setListThree(string $listThree): self
-    {
-        $this->listThree = $listThree;
-
-        return $this;
-    }
-
     public function getUserProfile(): ?UserProfile
     {
         return $this->userProfile;
@@ -155,6 +116,36 @@ class School
     public function setUserProfile(?UserProfile $userProfile): self
     {
         $this->userProfile = $userProfile;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SchoolDuty[]
+     */
+    public function getDuty(): Collection
+    {
+        return $this->duty;
+    }
+
+    public function addDuty(SchoolDuty $duty): self
+    {
+        if (!$this->duty->contains($duty)) {
+            $this->duty[] = $duty;
+            $duty->setSchool($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDuty(SchoolDuty $duty): self
+    {
+        if ($this->duty->removeElement($duty)) {
+            // set the owning side to null (unless already changed)
+            if ($duty->getSchool() === $this) {
+                $duty->setSchool(null);
+            }
+        }
 
         return $this;
     }

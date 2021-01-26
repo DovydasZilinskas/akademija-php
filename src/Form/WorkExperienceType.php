@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\WorkExperience;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,9 +19,13 @@ class WorkExperienceType extends AbstractType
             ->add('company', TextType::class)
             ->add('dateFrom', DateType::class)
             ->add('dateTo', DateType::class)
-            ->add('listOne', TextType::class)
-            ->add('listTwo', TextType::class)
-            ->add('listThree', TextType::class)
+            ->add('duty', CollectionType::class, [
+                'entry_type' => WorkDutyType::class,
+                'entry_options' => ['label' => false],
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
         ;
     }
 

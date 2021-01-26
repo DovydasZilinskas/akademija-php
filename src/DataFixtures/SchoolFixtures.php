@@ -27,7 +27,7 @@ class SchoolFixtures extends Fixture implements DependentFixtureInterface
                 ->setDateTo(new \DateTime())
                 ->setUserProfile($this->getReference('user-id'))
                 ->addDuty($duty);
-            $duty->setDuty('No ' . $i);
+            $duty->setDuty('Education no  ' . $i);
             $manager->persist($school, $duty);
         }
 
