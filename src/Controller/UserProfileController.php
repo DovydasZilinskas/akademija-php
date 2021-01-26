@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\School;
 use App\Entity\UserProfile;
 use App\Form\UserProfileType;
+use App\Repository\SchoolDutyRepository;
 use App\Repository\UserProfileRepository;
 use App\Repository\WorkExperienceRepository;
 use App\Repository\SchoolRepository;
@@ -16,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserProfileController extends AbstractController
 {
     #[Route('/', name: 'user_profile_index', methods: ['GET'])]
-    public function index(UserProfileRepository $userProfileRepository, WorkExperienceRepository $workExperienceRepository, SchoolRepository $schoolRepository): Response
+    public function index(UserProfileRepository $userProfileRepository, WorkExperienceRepository $workExperienceRepository, SchoolRepository $schoolRepository, SchoolDutyRepository $schoolDutyRepository): Response
     {
         return $this->render('user_profile/index.html.twig', [
             'user_profiles' => $userProfileRepository->findAll(),
