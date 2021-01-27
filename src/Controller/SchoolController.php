@@ -14,17 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/school')]
 class SchoolController extends AbstractController
 {
-    #[Route('/', name: 'school_index', methods: ['GET'])]
-    public function index(SchoolRepository $schoolRepository): Response
-    {
-        return $this->render('school/index.html.twig', [
-            'schools' => $schoolRepository->findAll(),
-        ]);
-    }
 
     #[Route('/new', name: 'school_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+
         $school = new School();
         $form = $this->createForm(SchoolType::class, $school);
         $form->handleRequest($request);
@@ -45,17 +40,11 @@ class SchoolController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'school_show', methods: ['GET'])]
-    public function show(School $school): Response
-    {
-        return $this->render('school/show.html.twig', [
-            'school' => $school,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'school_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, School $school): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+
         $form = $this->createForm(SchoolType::class, $school);
         $form->handleRequest($request);
 
@@ -74,6 +63,8 @@ class SchoolController extends AbstractController
     #[Route('/{id}', name: 'school_delete', methods: ['DELETE'])]
     public function delete(Request $request, School $school): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+        
         if ($this->isCsrfTokenValid('delete' . $school->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($school);

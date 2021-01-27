@@ -17,6 +17,8 @@ class WorkExperienceController extends AbstractController
     #[Route('/new', name: 'work_experience_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+
         $workExperience = new WorkExperience();
         $form = $this->createForm(WorkExperienceType::class, $workExperience);
         $form->handleRequest($request);
@@ -37,17 +39,11 @@ class WorkExperienceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'work_experience_show', methods: ['GET'])]
-    public function show(WorkExperience $workExperience): Response
-    {
-        return $this->render('work_experience/show.html.twig', [
-            'work_experience' => $workExperience,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'work_experience_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, WorkExperience $workExperience): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+
         $form = $this->createForm(WorkExperienceType::class, $workExperience);
         $form->handleRequest($request);
 
@@ -66,6 +62,8 @@ class WorkExperienceController extends AbstractController
     #[Route('/{id}', name: 'work_experience_delete', methods: ['DELETE'])]
     public function delete(Request $request, WorkExperience $workExperience): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+
         if ($this->isCsrfTokenValid('delete' . $workExperience->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($workExperience);

@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\CustomEvent\ContactEvent;
-use App\EventListener\ContactListener;
 use App\Form\ContactType;
 use App\Model\ContactModel;
-use App\Service\ContactService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

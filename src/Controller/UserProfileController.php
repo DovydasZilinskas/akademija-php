@@ -30,6 +30,8 @@ class UserProfileController extends AbstractController
     #[Route('/{id}', name: 'user_profile_show', methods: ['GET'])]
     public function show(UserProfile $userProfile): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+
         return $this->render('user_profile/show.html.twig', [
             'user_profile' => $userProfile,
         ]);
@@ -38,6 +40,8 @@ class UserProfileController extends AbstractController
     #[Route('/{id}/edit', name: 'user_profile_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, UserProfile $userProfile): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+        
         $form = $this->createForm(UserProfileType::class, $userProfile);
         $form->handleRequest($request);
 
@@ -56,6 +60,8 @@ class UserProfileController extends AbstractController
     #[Route('/{id}', name: 'user_profile_delete', methods: ['DELETE'])]
     public function delete(Request $request, UserProfile $userProfile): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
+        
         if ($this->isCsrfTokenValid('delete' . $userProfile->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($userProfile);
