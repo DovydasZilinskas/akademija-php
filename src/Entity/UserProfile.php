@@ -44,6 +44,31 @@ class UserProfile
      */
     private $work;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $subtitle;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $description;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $github;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $linkedin;
+
     public function __construct()
     {
         $this->Education = new ArrayCollection();
@@ -151,8 +176,63 @@ class UserProfile
         return $this;
     }
 
-    // public function __toString()
-    // {
-    //     return $this->id;
-    // }
+    public function getSubtitle(): ?string
+    {
+        return $this->subtitle;
+    }
+
+    public function setSubtitle(string $subtitle): self
+    {
+        $this->subtitle = $subtitle;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getGithub(): ?string
+    {
+        return $this->github;
+    }
+
+    public function setGithub(string $github): self
+    {
+        $this->github = $github;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getLinkedin(): ?string
+    {
+        return $this->linkedin;
+    }
+
+    public function setLinkedin(string $linkedin): self
+    {
+        $this->linkedin = $linkedin;
+
+        return $this;
+    }
 }
