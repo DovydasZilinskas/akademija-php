@@ -1,4 +1,30 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, { 'attr': {'class': 'form'} }) }}
+
+<div class="form-control">
+
+	<div class="form-section">
+		{{ form_row(form.position, {'attr': {'class': 'form-row'}}) }}
+		{{ form_row(form.company, {'attr': {'class': 'form-row'}}) }}
+	</div>
+	<div class="form-section">
+		{{ form_row(form.dateFrom, {'attr': {'class': 'form-date'}}) }}
+		{{ form_row(form.dateTo, {'attr': {'class': 'form-date'}}) }}
+	</div>
+	<div class="form-section">
+		{{ form_row(form.duty, {'attr': {'class': 'duties'}}) }}
+	</div>
+	<div class="form-section">
+		{{ form_help(form) }}
+		{{ form_errors(form) }}
+	</div>
+	<button class="btn">
+		{{ button_label|default('Save') }}
+	</button>
+
+</div>
+
 {{ form_end(form) }}
+
+{% block stylesheets %}
+	<link href="{{ asset('css/form.css') }}" rel="stylesheet"/>
+{% endblock %}

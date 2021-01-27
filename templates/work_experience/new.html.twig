@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New WorkExperience{% endblock %}
+{% block title %}New Work Place
+{% endblock %}
 
 {% block body %}
-    <h1>Create new WorkExperience</h1>
+	<h1>Create New Work Section</h1>
+	<div class="wrapper">
+		<a href="{{ path('user_profile_index') }}">Back</a>
+		<div class="container">
+			{{ include('work_experience/_form.html.twig') }}
 
-    {{ include('work_experience/_form.html.twig') }}
+			<button type="button" class="add_item_link" data-collection-holder-class="duties">Add duty</button>
+		</div>
+	</div>
+	<script src="{{ asset('scripts/new.js') }}"></script>
 
-    <a href="{{ path('user_profile_index') }}">back to list</a>
 {% endblock %}

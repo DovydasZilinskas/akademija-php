@@ -2,18 +2,35 @@
 
 
 {% block body %}
-<div>
-    {{ form_start(form) }}
-    <div>
-        {{ form_row(form.fullName) }}
-    </div>
-    <div>
-        {{ form_row(form.email) }}
-    </div>
-    <div>
-        {{ form_row(form.message) }}
-    </div>
-    {{ form_end(form) }}
-</div>
-<a href="{{ path('user_profile_index') }}">back to list</a>
+	{{ form_start(form) }}
+	<h1>Contact Me</h1>
+	<div class="wrapper">
+		<a href="{{ path('user_profile_index') }}">Back</a>
+		<div class="container">
+			{{ form_row(form.fullName) }}
+			<div class="contact-row">
+				{{ form_label(form.email) }}
+				{{ form_widget(form.email) }}
+			</div>
+			<div class="contact-row">
+				{{ form_label(form.message) }}
+				{{ form_widget(form.message) }}
+			</div>
+			<div class="contact-row">
+				{{ form_row(form.submit)}}
+			</div>
+
+			{% for message in app.flashes('success') %}
+				<div>
+					{{ message }}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	{{ form_end(form) }}
+
+
+	{% block stylesheets %}
+		<link href="{{ asset('css/form.css') }}" rel="stylesheet"/>
+	{% endblock %}
 {% endblock %}

@@ -1,13 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit School{% endblock %}
+{% block title %}
+	Edit Education
+{% endblock %}
 
 {% block body %}
-    <h1>Edit School</h1>
+	<h1>Edit Education Section</h1>
+	<div class="wrapper">
+		<a href="{{ path('user_profile_index') }}">Back</a>
 
-    {{ include('school/_form.html.twig', {'button_label': 'Update'}) }}
+		<div class="container">
+			{{ include('school/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('school_index') }}">back to list</a>
+			<button type="button" class="add_item_link btn" data-collection-holder-class="duties">Add duty</button>
 
-    {{ include('school/_delete_form.html.twig') }}
+			{{ include('school/_delete_form.html.twig') }}
+		</div>
+	</div>
+
+	<script src="{{ asset('scripts/edit-edu.js') }}"></script>
+
 {% endblock %}

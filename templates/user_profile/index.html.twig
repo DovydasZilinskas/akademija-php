@@ -1,100 +1,110 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Portfolio{% endblock %}
+{% block title %}Portfolio
+{% endblock %}
 
 {% block body %}
-    <h1>UserProfile</h1>
-    <a href="{{ path('contact') }}"><h4>Contact<h4></a>
 
-    <table class="table">
-        <tbody>
-        {% for user_profile in user_profiles %}
-            <tr>
-                <td>{{ user_profile.name }}</td>
-                </tr>
-                <tr>
-                <td>{{ user_profile.surname }}</td>
-                </tr>
-                <tr>
-                <td>Age {{ user_profile.age }}</td>
-                </tr>
-                <tr>
-                <td>
-                    <a href="{{ path('user_profile_edit', {'id': user_profile.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-        </table>
+	<header>
+		<div class="logo-text">
+			<a href="{{ path('user_profile_index') }}">Portfolio</a>
+		</div>
+		<nav>
+			<a href="{{ path('user_profile_index') }}">Home</a>
+			<a href="{{ path('contact') }}">Contact Me</a>
+			{% if not app.user %}
+				<a href="{{ path('app_login') }}">Login</a>
+			{% endif %}
+			{% if app.user %}
+				<a href="{{ path('app_logout') }}">Logout</a>
+			{% endif %}
+		</nav>
+	</header>
 
-    <h1>Experience Tab</h1>
+	<main>
+		<div class="wrapper">
+			<div class="left-section">Left</div>
+			<div class="right-section">
+				<div class="name">{{ user_profiles[0].name }}
+					{{ user_profiles[0].surname }}</div>
+				<div class="name-subtitle">{{ user_profiles[0].subtitle }}</div>
+				<div class="title">Personal profile
+					{% if app.user %}
+						<div class="edit-show">
+							<a href="{{ path('user_profile_edit', {'id': user_profiles[0].id}) }}">edit</a>
+						</div>
+					{% endif %}
+				</div>
+				<div class="description">{{ user_profiles[0].description }}</div>
+				<div class="content-box">
+					<div class="title">
+						Work Experience
+						{% if app.user %}
+							<a href="{{ path('work_experience_new') }}">Create new</a>
+						{% endif %}
+					</div>
+					{% for work_experience in work_experiences %}
+						<div class="subtitle">
+							{{ work_experience.position }}
+							{% if app.user %}
+								<div class="edit-show">
+									<a href="{{ path('work_experience_edit', {'id': work_experience.id}) }}">edit</a>
+								</div>
+							{% endif %}
+						</div>
+						<div class="content">
+							{{ work_experience.company }}
+							| From
+							{{ work_experience.dateFrom ? work_experience.dateFrom|date('Y-m-d') : '' }}
+							- To
+							{{ work_experience.dateTo ? work_experience.dateTo|date('Y-m-d') : '' }}
+							<ul class="duty">
+								{% for duty in work_experience.duty %}
+									<li>{{ duty.duty }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+					{% else %}
+						<tr>
+							<td colspan="9">no records found</td>
+						</tr>
+					{% endfor %}
+				</div>
+				<div class="content-box">
+					<div class="title">Education
+						{% if app.user %}
+							<a class="create-new" href="{{ path('school_new') }}">Create new</a>
+						{% endif %}
+					</div>
+					{% for school in schools %}
+						<div class="subtitle">
+							{{ school.institution }}
+							{% if app.user %}
+								<div class="edit-show">
+									<a href="{{ path('school_edit', {'id': school.id}) }}">edit</a>
+								</div>
+							{% endif %}
+						</div>
+						<div class="content">
+							{{ school.title }}
+							| From
+							{{ school.dateFrom ? school.dateFrom|date('Y-m-d') : '' }}
+							- To
+							{{ school.dateTo ? school.dateTo|date('Y-m-d') : '' }}
+							<ul class="duty">
+								{% for duty in school.duty %}
+									<li>{{ duty.duty }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+					{% else %}
+						<tr>
+							<td colspan="9">no records found</td>
+						</tr>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</main>
 
-    <table class="table">
-        <tbody>
-        {% for work_experience in work_experiences %}
-            <tr>
-                <td><h3>{{ work_experience.position }},</h3></td>
-                </tr>
-                <tr>
-                <td><h4>{{ work_experience.company }}</h4></td>
-                <td>From {{ work_experience.dateFrom ? work_experience.dateFrom|date('Y-m-d') : '' }} -</td>
-                <td>To {{ work_experience.dateTo ? work_experience.dateTo|date('Y-m-d') : '' }}</td>
-                                <td>
-                    <a href="{{ path('work_experience_show', {'id': work_experience.id}) }}">show</a>
-                    <a href="{{ path('work_experience_edit', {'id': work_experience.id}) }}">edit</a>
-                </td>
-                </tr>
-                <tr>
-                <td>
-                    <ul>
-                        <li>{{ work_experience.listOne }}</li>
-                        <li>{{ work_experience.listTwo }}</li>
-                        <li>{{ work_experience.listThree }}</li>
-                    </ul>
-                </td>
-                </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('work_experience_new') }}">Create new</a>
-
-
-    </table>
-
-        <h1>Education Tab</h1>
-
-    <table class="table">
-        <tbody>
-        {% for school in schools %}
-            <tr>
-                <td>{{ school.institution }}</td>
-                <td>{{ school.title }}</td>
-                <td>{{ school.dateFrom ? school.dateFrom|date('Y-m-d') : '' }}</td>
-                <td>{{ school.dateTo ? school.dateTo|date('Y-m-d') : '' }}</td>
-                <td>{{ school.listOne }}</td>
-                <td>{{ school.listTwo }}</td>
-                <td>{{ school.ListThree }}</td>
-                <td>
-                    <a href="{{ path('school_show', {'id': school.id}) }}">show</a>
-                    <a href="{{ path('school_edit', {'id': school.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('school_new') }}">Create new</a>
 {% endblock %}
