@@ -1,0 +1,111 @@
+.wrapper {
+    width: 750px;
+    background-color: #ececec;
+    padding: 50px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container {
+    margin: 0 auto;
+    width: 323px;
+}
+
+[id^="work_experience_duty_"] {
+    display: flex;
+}
+
+[id^="school_duty_"] {
+    display: flex;
+}
+
+.form-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.form-date {
+    margin-bottom: 10px;
+}
+
+.btn-delete {
+    margin-left: -60px;
+    height: 27px;
+    width: 60px;
+    background: none;
+    border: 0;
+    font-style: italic;
+}
+
+.btn-delete:hover {
+    background: #999999;
+}
+
+.btn-delete:active {
+    background: #888888;
+}
+
+input {
+    width: 315px;
+    height: 20px;
+    margin-bottom: 10px;
+}
+
+input[id^="school_duty_"]{
+    width: 257px;
+    padding-right: 60px;
+}
+
+.add-duty {
+    display: flex;
+}
+
+.btn {
+    margin-bottom: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    padding: 2px;
+}
+
+label {
+    font-weight: bold;
+}
+
+textarea {
+    resize: vertical;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.contact-row {
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+select:not(:last-child) {
+    margin-right: 5px;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;   
+    -webkit-border-radius: 0;    
+    -moz-border-radius: 0;  
+    border-radius: 0;  
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+}

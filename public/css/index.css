@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    color: #666;
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    background-color: #ececec;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+header a {
+    text-decoration: none;
+}
+
+.logo-text {
+    font-size: 2em;
+    padding-left: 10px;
+}
+
+nav a {
+    padding: 10px;
+}
+
+nav a:hover {
+    color: red;
+}
+
+.wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.left-section {
+    flex: 1;
+    background-color: #F5D1C7;
+    padding: 10px;
+    border-radius: 0px 0px 0px 10px;
+}
+
+.right-section {
+    flex: 2;
+    background-color: #ececec;
+    padding: 10px;
+    border-radius: 0px 0px 10px 0px;
+}
+
+.name {
+    font-size: 2em;
+    color: #1b1b1b;
+}
+
+.name-subtitle {
+    text-transform: uppercase;
+    font-size: 1.4em;
+    color: #b49991;
+}
+
+.content-box {
+    padding: 10px 0px;
+}
+
+.title {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    line-height: 2em;
+    color: #b49991;
+    font-size: 1.1em;
+}
+
+.subtitle {
+    font-weight: bold;
+}
+
+.edit-show {
+    display: inline;
+    padding-bottom: 10px;
+}
+
+.edit-show a {
+    color: #FF9933;
+    padding: 0px 5px;
+    font-weight: 400;
+}
