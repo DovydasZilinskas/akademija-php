@@ -20,6 +20,7 @@ class WorkExperienceType extends AbstractType
             ->add('dateFrom', DateType::class)
             ->add('dateTo', DateType::class)
             ->add('duty', CollectionType::class, [
+                'label' => false,
                 'entry_type' => WorkDutyType::class,
                 'entry_options' => ['label' => false],
                 'by_reference' => false,

@@ -13,7 +13,9 @@ class SchoolDutyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('duty', TextType::class);
+            ->add('duty', TextType::class, [
+                'label' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
