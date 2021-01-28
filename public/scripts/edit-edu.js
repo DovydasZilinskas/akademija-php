@@ -40,9 +40,9 @@ jQuery(document).ready(function () {
     
     var newForm = prototype;
     
-    newForm = newForm.replace(/__name__/g, index + 1 + id);
+    newForm = newForm.replace(/__name__/g, index + (Number.isInteger(id) ? id : 1));
     
-    $collectionHolder.data('index', index + 1 + id);
+    $collectionHolder.data('index', index + (Number.isInteger(id) ? id : 1));
     
     var $newFormLi = $('<div class="add-duty"></div>').append(newForm);
     

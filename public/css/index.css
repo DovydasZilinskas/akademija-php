@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
 
 * {
-    color: #666;
-    font-family: 'Roboto', sans-serif;
+    color: #261725;
+    font-family: 'Fira Sans', sans-serif;
 }
 
 header {
-    background-color: #ececec;
+    background-color: #F2E2C4;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,22 +33,23 @@ nav a:hover {
 }
 
 .wrapper {
-    max-width: 800px;
+    max-width: 850px;
     margin: 0 auto;
     display: flex;
 }
 
 .left-section {
     flex: 1;
-    background-color: #F5D1C7;
-    padding: 10px;
+    background-color: #F2E6D8;
+    padding: 10px 20px 10px 20px;
     border-radius: 0px 0px 0px 10px;
+    position: relative;
 }
 
 .right-section {
     flex: 2;
-    background-color: #ececec;
-    padding: 10px;
+    background-color: #F2EDE9;
+    padding: 10px 20px 10px 40px;
     border-radius: 0px 0px 10px 0px;
 }
 
@@ -60,19 +61,24 @@ nav a:hover {
 .name-subtitle {
     text-transform: uppercase;
     font-size: 1.4em;
-    color: #b49991;
+    color: #595143;
 }
 
 .content-box {
     padding: 10px 0px;
 }
 
+.content-box:last-child {
+    margin-bottom: 40px;
+}
+
 .title {
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    line-height: 2em;
-    color: #b49991;
+    line-height: 3em;
+    color: #595143;
     font-size: 1.1em;
+    margin-top: 40px;
 }
 
 .subtitle {
@@ -84,8 +90,80 @@ nav a:hover {
     padding-bottom: 10px;
 }
 
-.edit-show a {
+.edit-show > a {
     color: #FF9933;
     padding: 0px 5px;
     font-weight: 400;
+    font-size: 16px;
+    letter-spacing: normal;
+    text-transform: none;
+    text-decoration: none;
+}
+
+.edit-show a::before {
+    content: "- ";
+}
+
+.description {
+    line-height: 150%;
+}
+
+.circle {
+    position: absolute;
+    right: -10%;
+    background: #F2EDE9;
+    padding: 10px;
+    border-radius: 50% 50% 0 50%;
+    border: 10px solid #F2E6D8;
+}
+
+.left-section img {
+    width: 265px;
+    border-radius: 50%;
+    filter: sepia(40%)
+}
+
+.skills {
+    display: flex;
+    flex-direction: column;
+    margin-top: 360px;
+}
+
+.contacts {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-email:before {
+    content: "";
+    background: url(../images/logos/email.svg) no-repeat;
+    display: block;
+    width: 20px;
+    height: 18px;
+    float: left;
+    padding-right: 5px;
+}
+
+.contact-linkedin:before {
+    content: "";
+    background: url(../images/logos/linkedin.svg) no-repeat;
+    display: block;
+    width: 20px;
+    height: 18px;
+    float: left;
+    padding-right: 5px;
+}
+
+.contact-github:before {
+    content: "";
+    background: url(../images/logos/github.svg) no-repeat;
+    display: block;
+    width: 20px;
+    height: 18px;
+    float: left;
+    padding-right: 5px;
+}
+
+.contacts a {
+    margin-bottom: 5px;
 }

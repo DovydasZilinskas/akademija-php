@@ -23,7 +23,21 @@
 
 	<main>
 		<div class="wrapper">
-			<div class="left-section">Left</div>
+			<div class="left-section">
+				<div class="circle">
+					<img src="{{ asset('images/profile_pic.jpg') }}" alt="Profile pictures"/>
+				</div>
+				<div class="skills">
+					<div class="title">
+						Contacts
+					</div>
+					<div class="contacts">
+						<a href="{{ path('contact') }}" class="contact-email">{{ user_profiles[0].email }}</a>
+						<a href="https://www.linkedin.com/in/d-zilinskas/" target="_blank" class="contact-linkedin">{{ user_profiles[0].linkedin }}</a>
+						<a href="https://github.com/DovydasZilinskas" target="_blank" class="contact-github">{{ user_profiles[0].github }}</a>
+					</div>
+				</div>
+			</div>
 			<div class="right-section">
 				<div class="name">{{ user_profiles[0].name }}
 					{{ user_profiles[0].surname }}</div>
@@ -40,7 +54,9 @@
 					<div class="title">
 						Work Experience
 						{% if app.user %}
-							<a href="{{ path('work_experience_new') }}">Create new</a>
+							<div class="edit-show">
+								<a href="{{ path('work_experience_new') }}">Create new</a>
+							</div>
 						{% endif %}
 					</div>
 					{% for work_experience in work_experiences %}
@@ -73,7 +89,9 @@
 				<div class="content-box">
 					<div class="title">Education
 						{% if app.user %}
-							<a class="create-new" href="{{ path('school_new') }}">Create new</a>
+							<div class="edit-show">
+								<a class="create-new" href="{{ path('school_new') }}">Create new</a>
+							</div>
 						{% endif %}
 					</div>
 					{% for school in schools %}
