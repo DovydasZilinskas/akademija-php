@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\School;
 use App\Entity\UserProfile;
 use App\Form\SchoolType;
-use App\Repository\SchoolRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

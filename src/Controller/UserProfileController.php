@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\School;
 use App\Entity\UserProfile;
 use App\Form\UserProfileType;
 use App\Repository\SchoolDutyRepository;
@@ -24,16 +23,6 @@ class UserProfileController extends AbstractController
             'user_profiles' => $userProfileRepository->findAll(),
             'work_experiences' => $workExperienceRepository->findAll(),
             'schools' => $schoolRepository->findAll(),
-        ]);
-    }
-
-    #[Route('/{id}', name: 'user_profile_show', methods: ['GET'])]
-    public function show(UserProfile $userProfile): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
-
-        return $this->render('user_profile/show.html.twig', [
-            'user_profile' => $userProfile,
         ]);
     }
 
