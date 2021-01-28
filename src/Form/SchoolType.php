@@ -17,8 +17,12 @@ class SchoolType extends AbstractType
         $builder
             ->add('institution', TextType::class)
             ->add('title', TextType::class)
-            ->add('dateFrom', DateType::class)
-            ->add('dateTo', DateType::class)
+            ->add('dateFrom', DateType::class, [
+                'years' => range(date('Y')-20, date('Y')+30),
+            ])
+            ->add('dateTo', DateType::class, [
+                'years' => range(date('Y')-20, date('Y')+30),
+            ])
             ->add('duty', CollectionType::class, [
                 'label' => false,
                 'entry_type' => SchoolDutyType::class,
