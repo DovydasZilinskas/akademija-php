@@ -5,22 +5,6 @@
 
 {% block body %}
 
-	<header>
-		<div class="logo-text">
-			<a href="{{ path('user_profile_index') }}">Portfolio</a>
-		</div>
-		<nav>
-			<a href="{{ path('user_profile_index') }}">Home</a>
-			<a href="{{ path('contact') }}">Contact Me</a>
-			{% if not app.user %}
-				<a href="{{ path('app_login') }}">Login</a>
-			{% endif %}
-			{% if app.user %}
-				<a href="{{ path('app_logout') }}">Logout</a>
-			{% endif %}
-		</nav>
-	</header>
-
 	<main>
 		<div class="wrapper">
 			<div class="left-section">
@@ -32,24 +16,24 @@
 						Contacts
 					</div>
 					<div class="contacts">
-						<a href="{{ path('contact') }}" class="contact-email">{{ user_profiles[0].email }}</a>
-						<a href="https://www.linkedin.com/in/d-zilinskas/" target="_blank" class="contact-linkedin">{{ user_profiles[0].linkedin }}</a>
-						<a href="https://github.com/DovydasZilinskas" target="_blank" class="contact-github">{{ user_profiles[0].github }}</a>
+						<a href="{{ path('contact') }}" class="contact-email">{{ user_profiles.email }}</a>
+						<a href="https://www.linkedin.com/in/d-zilinskas/" target="_blank" class="contact-linkedin">{{ user_profiles.linkedin }}</a>
+						<a href="https://github.com/DovydasZilinskas" target="_blank" class="contact-github">{{ user_profiles.github }}</a>
 					</div>
 				</div>
 			</div>
 			<div class="right-section">
-				<div class="name">{{ user_profiles[0].name }}
-					{{ user_profiles[0].surname }}</div>
-				<div class="name-subtitle">{{ user_profiles[0].subtitle }}</div>
+				<div class="name">{{ user_profiles.name }}
+					{{ user_profiles.surname }}</div>
+				<div class="name-subtitle">{{ user_profiles.subtitle }}</div>
 				<div class="title">Personal profile
 					{% if app.user %}
 						<div class="edit-show">
-							<a href="{{ path('user_profile_edit', {'id': user_profiles[0].id}) }}">edit</a>
+							<a href="{{ path('user_profile_edit', {'id': user_profiles.id}) }}">edit</a>
 						</div>
 					{% endif %}
 				</div>
-				<div class="description">{{ user_profiles[0].description }}</div>
+				<div class="description">{{ user_profiles.description }}</div>
 				<div class="content-box">
 					<div class="title">
 						Work Experience
