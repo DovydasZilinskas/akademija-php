@@ -15,6 +15,7 @@ class SchoolDutyType extends AbstractType
         $builder
             ->add('duty', TextType::class, [
                 'label' => false,
+                'attr' => ['maxlength' => 255],
             ]);
     }
 

@@ -15,8 +15,12 @@ class WorkExperienceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('position', TextType::class)
-            ->add('company', TextType::class)
+            ->add('position', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
+            ->add('company', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
             ->add('dateFrom', DateType::class, [
                 'years' => range(date('Y')-20, date('Y')+30),
             ])

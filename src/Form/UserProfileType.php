@@ -16,16 +16,29 @@ class UserProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('surname', TextType::class)
+            ->add('name', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
+            ->add('surname', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
             ->add('age', NumberType::class)
-            ->add('subtitle', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('subtitle', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
+            ->add('email', EmailType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
             ->add('description', TextareaType::class, [
                 'attr' => ['rows' => 10],
+                'attr' => ['maxlength' => 255],
             ])
-            ->add('linkedin', TextType::class)
-            ->add('github', TextType::class);
+            ->add('linkedin', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
+            ->add('github', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

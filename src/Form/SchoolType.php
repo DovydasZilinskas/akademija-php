@@ -15,8 +15,12 @@ class SchoolType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('institution', TextType::class)
-            ->add('title', TextType::class)
+            ->add('institution', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
+            ->add('title', TextType::class, [
+                'attr' => ['maxlength' => 255],
+            ])
             ->add('dateFrom', DateType::class, [
                 'years' => range(date('Y')-20, date('Y')+30),
             ])
