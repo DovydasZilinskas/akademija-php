@@ -13,20 +13,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/user/profile')]
+#[Route('/')]
 class UserProfileController extends AbstractController
 {
     #[Route('/', name: 'user_profile_index', methods: ['GET'])]
     public function index(UserProfileRepository $userProfileRepository, WorkExperienceRepository $workExperienceRepository, SchoolRepository $schoolRepository, SchoolDutyRepository $schoolDutyRepository): Response
     {
         return $this->render('user_profile/index.html.twig', [
-            'user_profiles' => $userProfileRepository->findAll(),
+            'user_profiles' => $userProfileRepository->findOneBy(['id' => 48]),
             'work_experiences' => $workExperienceRepository->findAll(),
             'schools' => $schoolRepository->findAll(),
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'user_profile_edit', methods: ['GET', 'POST'])]
+    #[Route('user/profile/{id}/edit', name: 'user_profile_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, UserProfile $userProfile): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
@@ -46,7 +46,7 @@ class UserProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'user_profile_delete', methods: ['DELETE'])]
+    #[Route('user/profile/{id}', name: 'user_profile_delete', methods: ['DELETE'])]
     public function delete(Request $request, UserProfile $userProfile): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
