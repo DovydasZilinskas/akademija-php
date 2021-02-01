@@ -18,10 +18,17 @@
 			</div>
 			<div class="contact-row">
 				{{form_row(form.captcha)}}
+			</div>
+			<div class="contact-row">
 				{{ form_row(form.submit)}}
 			</div>
 
 			{% for message in app.flashes('success') %}
+				<div>
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% for message in app.flashes('error') %}
 				<div>
 					{{ message }}
 				</div>

@@ -37,6 +37,10 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('contact');
         }
 
+        if ($form->isSubmitted() && !$reCaptcha) {
+            $this->addFlash('error', 'Please check reCaptcha checkbox!');
+        }
+
         return $this->render('contact/index.html.twig', [
             'form' => $form->createView()
         ]);
