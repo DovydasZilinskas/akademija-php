@@ -37,9 +37,11 @@
 	</div>
 	{{ form_end(form) }}
 	{% block javascript %}
+		{{ encore_entry_script_tags('contact') }}
 		<script src="//www.google.com/recaptcha/api.js?hl=en"></script>
 	{% endblock %}
 	{% block stylesheets %}
 		<link href="{{ asset('css/form.css') }}" rel="stylesheet"/>
 	{% endblock %}
+
 {% endblock %}
