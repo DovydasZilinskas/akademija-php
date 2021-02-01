@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use Beelab\Recaptcha2Bundle\Form\Type\RecaptchaType;
+use Beelab\Recaptcha2Bundle\Validator\Constraints\Recaptcha2;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,14 +19,19 @@ class ContactType extends AbstractType
         $builder
             ->add('fullName', TextType::class, [
                 'label' => 'Name and Last Name',
+                'attr' => ['maxlength' => 255],
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email'
+                'label' => 'Email',
+                'attr' => ['maxlength' => 255],
             ])
             ->add('message', TextareaType::class, [
-                'attr' => ['rows' => 6],
+                'attr' => ['rows' => 6, 'maxlength' => 255],
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class)
+            ->add('captcha', RecaptchaType::class, [
+                'constraints' => new Recaptcha2(['groups' => ['create']])
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

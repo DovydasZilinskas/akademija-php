@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\CustomEvent\ContactEvent;
 use App\Form\ContactType;
 use App\Model\ContactModel;
+use ReCaptcha\ReCaptcha;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,16 +16,18 @@ class ContactController extends AbstractController
 
     #[Route("/contact", name: "contact")]
     
-    public function index(Request $request, EventDispatcherInterface $dispatcher)
+    public function index(Request $request, EventDispatcherInterface $dispatcher, ReCaptcha $reCaptcha)
     {
             
         $contact = new ContactModel();
 
         $form = $this->createForm(ContactType::class, $contact);
 
+        $reCaptcha = $request->get('g-recaptcha-response', '');
+
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $reCaptcha) {
             $event = new ContactEvent($contact);
 
             $dispatcher->dispatch($event, ContactEvent::NAME);

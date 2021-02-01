@@ -17,6 +17,7 @@
 				{{ form_widget(form.message) }}
 			</div>
 			<div class="contact-row">
+				{{form_row(form.captcha)}}
 				{{ form_row(form.submit)}}
 			</div>
 
@@ -28,8 +29,9 @@
 		</div>
 	</div>
 	{{ form_end(form) }}
-
-
+	{% block javascript %}
+		<script src="//www.google.com/recaptcha/api.js?hl=en"></script>
+	{% endblock %}
 	{% block stylesheets %}
 		<link href="{{ asset('css/form.css') }}" rel="stylesheet"/>
 	{% endblock %}

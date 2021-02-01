@@ -12,7 +12,6 @@ class ContactModel
 
     public function setFullName(string $fullName): self
     {
-
         $this->fullName = $fullName;
 
         return $this;
@@ -20,7 +19,6 @@ class ContactModel
 
     public function getFullName(): string
     {
-
         return $this->fullName;
     }
 
@@ -40,7 +38,6 @@ class ContactModel
 
     public function setMessage(string $message): self
     {
-
         $this->message = $message;
 
         return $this;
@@ -48,8 +45,6 @@ class ContactModel
 
     public function getMessage(): string
     {
-
         return $this->message;
-
     }
 }
