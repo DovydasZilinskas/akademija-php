@@ -13,8 +13,14 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ContactController extends AbstractController
 {
-
     #[Route("/contact", name: "contact")]
+
+    public function indexView(Request $request)
+    {
+        return $this->render('contact/index.html.twig');
+    }
+
+    #[Route("/contactpost", name: "contact.post")]
     
     public function index(Request $request, EventDispatcherInterface $dispatcher, ReCaptcha $reCaptcha)
     {
@@ -41,8 +47,13 @@ class ContactController extends AbstractController
             $this->addFlash('error', 'Please check reCaptcha checkbox!');
         }
 
-        return $this->render('contact/index.html.twig', [
+        $view = $this->render('contact/form.html.twig', [
             'form' => $form->createView()
+        ]);
+
+        return $this->json([
+            'form' => $view,
+            'title' => 'Create a new post'
         ]);
     }
 }

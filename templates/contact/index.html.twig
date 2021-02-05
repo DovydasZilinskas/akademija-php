@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-
 {% block body %}
-	{{ form_start(form) }}
-	<h1>Contact Me</h1>
+	{# {{ form_start(form) }}	
+	<div id="app"></div>
 	<div class="wrapper">
 		<a href="{{ path('user_profile_index') }}">Back</a>
 		<div class="container">
@@ -35,13 +34,17 @@
 			{% endfor %}
 		</div>
 	</div>
-	{{ form_end(form) }}
-	{% block javascript %}
-		{{ encore_entry_script_tags('contact') }}
-		<script src="//www.google.com/recaptcha/api.js?hl=en"></script>
-	{% endblock %}
-	{% block stylesheets %}
-		<link href="{{ asset('css/form.css') }}" rel="stylesheet"/>
-	{% endblock %}
+	{{ form_end(form) }} #}
+
+	<div id="contact">
+		<Contact />
+	</div>
 
 {% endblock %}
+
+	{# {% block javascript %}
+		<script src="//www.google.com/recaptcha/api.js?hl=en"></script>
+	{% endblock %} #}
+	{# {% block stylesheets %}
+		<link href="{{ asset('css/form.css') }}" rel="stylesheet"/>
+	{% endblock %} #}
