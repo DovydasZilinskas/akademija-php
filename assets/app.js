@@ -1,8 +1,11 @@
 import Vue from 'vue';
-import App from './components/App';
+import Contact from './components/ContactForm';
 import './styles/app.css';
+
+import {store} from './contact';
 
 new Vue({
   el: '#app',
-  render: (h) => h(App),
+  store,
+  render: (h) => h(Contact),
 });

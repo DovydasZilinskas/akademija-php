@@ -21,7 +21,6 @@ Encore
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
   .addEntry('app', './assets/app.js')
-  .addEntry('contact', './assets/contact.js')
   .enableVueLoader()
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
@@ -52,16 +51,16 @@ Encore
   })
 
   // enables @babel/preset-env polyfills
-  .configureBabelPresetEnv((config) => {
-    config.useBuiltIns = 'usage';
-    config.corejs = 3;
-  });
+  // .configureBabelPresetEnv((config) => {
+  //   config.useBuiltIns = 'usage';
+  //   config.corejs = 3;
+  // });
 
 // enables Sass/SCSS support
 //.enableSassLoader()
 
 // uncomment if you use TypeScript
-//.enableTypeScriptLoader()
+// .enableTypeScriptLoader()
 
 // uncomment if you use React
 //.enableReactPreset()
