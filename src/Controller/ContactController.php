@@ -7,6 +7,7 @@ use App\Form\ContactType;
 use App\Model\ContactModel;
 use ReCaptcha\ReCaptcha;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -15,45 +16,50 @@ class ContactController extends AbstractController
 {
     #[Route("/contact", name: "contact")]
 
-    public function indexView(Request $request)
+    public function index()
     {
         return $this->render('contact/index.html.twig');
     }
 
     #[Route("/contactpost", name: "contact.post")]
     
-    public function index(Request $request, EventDispatcherInterface $dispatcher, ReCaptcha $reCaptcha)
+    public function renderForm(Request $request, EventDispatcherInterface $dispatcher, ReCaptcha $reCaptcha)
     {
-            
+
+        $response = new JsonResponse(['data' => 123]);
+
         $contact = new ContactModel();
 
         $form = $this->createForm(ContactType::class, $contact);
 
-        $reCaptcha = $request->get('g-recaptcha-response', '');
+        // $reCaptcha = $request->get('g-recaptcha-response', '');
 
-        $form->handleRequest($request);
+        $data = json_decode($request->getContent(), true);
 
-        if ($form->isSubmitted() && $form->isValid() && $reCaptcha) {
+        $form->submit($data);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $event = new ContactEvent($contact);
 
             $dispatcher->dispatch($event, ContactEvent::NAME);
 
-            $this->addFlash('success', 'Your message has been sent');
+            $response->setData(['data' => 'success']);
 
-            return $this->redirectToRoute('contact');
+            // $this->addFlash('success', 'Your message has been sent');
+
+            // return $this->redirectToRoute('user_profile_index');
+        } else {
+            $response->setData(['data' => 'error']);
         }
 
-        if ($form->isSubmitted() && !$reCaptcha) {
-            $this->addFlash('error', 'Please check reCaptcha checkbox!');
-        }
+        return $response;
 
-        $view = $this->render('contact/form.html.twig', [
-            'form' => $form->createView()
-        ]);
+        // if ($form->isSubmitted() && !$reCaptcha) {
+        //     $this->addFlash('error', 'Please check reCaptcha checkbox!');
+        // }
 
-        return $this->json([
-            'form' => $view,
-            'title' => 'Create a new post'
-        ]);
+        // return $this->render('contact/index.html.twig', [
+        //     'form' => $form->createView()
+        // ]);
     }
 }

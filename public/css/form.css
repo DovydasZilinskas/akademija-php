@@ -1,4 +1,4 @@
-.wrapper {
+ .wrapper {
     width: 750px;
     background-color: #F2EDE9;
     padding: 50px;
@@ -11,7 +11,7 @@
 .container {
     margin: 0 auto;
     width: 323px;
-}
+} 
 
 [id^="work_experience_duty_"] {
     display: flex;

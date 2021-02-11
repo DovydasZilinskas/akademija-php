@@ -3,36 +3,26 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Welcome to my Portfolio
+			{% block title %}
+				Welcome to my Portfolio
 			{% endblock %}
 		</title>
-        {{ encore_entry_link_tags('contact') }}
+		{{ encore_entry_link_tags('app') }}
+		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render=explicit&hl={{app.request.locale}}" async defer></script>
 		<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-		<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=onGoogleReCaptchaApiLoad&render=explicit&hl={{app.request.locale}}" async defer></script>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet"/>
 		<link href="{{ asset('css/index.css') }}" rel="stylesheet"/>
+		<link href="{{ asset('css/modal.css') }}" rel="stylesheet"/>
 	</head>
 	<body>
+	
 		{% block header %}
-			<header>
-				<div class="logo-text">
-					<a href="{{ path('user_profile_index') }}">Portfolio</a>
-				</div>
-				<nav>
-					<a href="{{ path('user_profile_index') }}">Home</a>
-					<a href="{{ path('contact') }}">Contact Me</a>
-					{% if not app.user %}
-						<a href="{{ path('app_login') }}">Login</a>
-					{% endif %}
-					{% if app.user %}
-						<a href="{{ path('app_logout') }}">Logout</a>
-					{% endif %}
-				</nav>
-			</header>
+
 		{% endblock %}
 		{% block body %}{% endblock %}
 		{% block javascripts %}
-			{{ encore_entry_script_tags('contact') }}
-        {% endblock %}
+			<script src="{{ asset('scripts/modal.js') }}"></script>
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
 	</body>
 </html>
