@@ -10,15 +10,25 @@ class ContactControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/contact');
+        // $crawler = $client->request('GET', '/contact');
+        
+        // $form = $crawler->filter('form')->form();
+
+        // $form->setValues(['contact[fullName]' => 'Dovydas', 'contact[email]' => 'test@test', 'contact[message]' => 'TEST']);
+
+        $content = '
+        {
+            "fullName": "Dovydas",
+            "email": "test@test",
+            "message": "labas"
+        }
+        ';
+
+        $client->request('POST', '/contactpost', ['headers' => ['Content-Type' => 'application/json']], [], [], $content);
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        $form = $crawler->filter('form')->form();
-
-        $form->setValues(['contact[fullName]' => 'Dovydas', 'contact[email]' => 'test@test', 'contact[message]' => 'TEST']);
-
-        $crawler = $client->submit($form);
+        // $crawler = $client->submit($form);
 
         $this->assertEmailCount(1);
 
