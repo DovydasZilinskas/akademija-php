@@ -34,3 +34,6 @@ services:
     App\EventListener\ContactListener:
         tags:
             - { name: kernel.event_listener, event: contact.message, method: 'sendMessage' }
+    App\EventListener\EmailListener:
+        tags:
+            - { name: kernel.event_listener, event: contact.message, method: 'registerEmail' }
