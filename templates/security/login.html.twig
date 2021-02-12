@@ -7,6 +7,7 @@
 	<form method="post">
 		<h1>Please sign in</h1>
 		<div class="wrapper">
+		<a href="{{ path('user_profile_index') }}">Back</a>
 			<div class="container">
 				{% if error %}
 					<div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

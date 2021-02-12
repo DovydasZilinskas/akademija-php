@@ -9,11 +9,19 @@
       <input type="email" v-model="email" placeholder="Email" />
 
       <label>Message</label>
-      <textarea v-model="emailMessage" placeholder="Your text here..."></textarea>
+      <textarea
+        v-model="emailMessage"
+        placeholder="Your text here..."
+      ></textarea>
 
       <button type="submit">Send</button>
     </form>
-    <NotificationsMsg v-if="error" v-bind:message="notificationsMsg" v-on:displaynot="error = false" />
+    <NotificationsMsg
+      v-if="error"
+      v-bind:message="notificationsMsg"
+      v-on:displaynot="error = false"
+      :type="type"
+    />
   </div>
 </template>
 
@@ -21,7 +29,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component';
 import NotificationsMsg from './Notification'
-import axios from 'axios';
 
 @Component({
     components: {
@@ -36,62 +43,66 @@ export default class Contact extends Vue {
       emailMessage: "",
       notificationsMsg: "",
       error: false,
+      type: "",
     }
   }
   send() {
-    axios.post('/contactpost', {
-        fullName: this.name,
-        email: this.email,
-        message: this.emailMessage,
-      })
-      .then((response) => {
-        if (response.data.data === 'success') {
-          let key = 'success';
-          this.$store.commit('success', key);
-          this.notificationsMsg = this.$store.getters.messageToDisplay;
-          this.error = true;
-          this.email = "";
-          this.name = "";
-          this.emailMessage = "";
-          console.log(this.$store.state.chosenMessage);
-        } else {
-          let key = 'error';
-          this.$store.commit('error', key);
-          this.notificationsMsg = this.$store.getters.messageToDisplay;
-          this.error = true;
-          console.log(this.$store.state.chosenMessage);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    fetch("/contactpost", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({fullName: this.name, email: this.email, message: this.emailMessage})
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (Object.keys(res).length > 1 ) {
+        this.error = true;
+        this.$store.commit('error', 'blank.fields');
+        this.notificationsMsg = this.$store.getters.messageToDisplay;
+        this.type = "error"
+      } else if (Object.values(res) != "success" ) {
+        this.error = true;
+        this.$store.commit('error', Object.keys(res));
+        this.notificationsMsg = this.$store.getters.messageToDisplay;
+        this.type = "error"
+      } else {
+        this.error = true;
+        this.$store.commit('success', Object.values(res));
+        this.notificationsMsg = this.$store.getters.messageToDisplay;
+        this.email = "";
+        this.name = "";
+        this.emailMessage = "";
+        this.type = ""
+      }
+    })
+    .catch(error => console.log(error))
   }
 }
+
 </script>
 
 <style scoped>
 .container {
-    margin: 0 auto;
-    width: 323px;
-    background-color: #F2EDE9;
-    padding: 50px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  margin: 0 auto;
+  width: 323px;
+  background-color: #f2ede9;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .form {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 input {
-    padding: 2px;
-    width: 100%;
-    box-sizing: border-box;
+  padding: 2px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 label {
@@ -100,9 +111,18 @@ label {
 }
 
 textarea {
-    resize: vertical;
-    width: 100%;
-    box-sizing: border-box;
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+input,
+textarea {
+  margin-bottom: 10px;
+}
+
+.error {
+  background: #f16157;
+}
 </style>
+

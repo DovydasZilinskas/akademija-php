@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserProfileController extends AbstractController
 {
     #[Route('/', name: 'user_profile_index', methods: ['GET'])]
-    public function index(UserProfileRepository $userProfileRepository, WorkExperienceRepository $workExperienceRepository, SchoolRepository $schoolRepository, SchoolDutyRepository $schoolDutyRepository): Response
+    public function index(UserProfileRepository $userProfileRepository, WorkExperienceRepository $workExperienceRepository, SchoolRepository $schoolRepository): Response
     {
         return $this->render('user_profile/index.html.twig', [
             'user_profiles' => $userProfileRepository->findOneBy(['id' => 48]),

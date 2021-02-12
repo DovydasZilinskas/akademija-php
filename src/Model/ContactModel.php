@@ -2,27 +2,38 @@
 
 namespace App\Model;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class ContactModel
 {
-    private string $fullName = '';
+    /**
+     * @Assert\NotBlank
+     */
+    private ?string $fullName = '';
 
-    private string $email = '';
+    /**
+     * @Assert\NotBlank
+     */
+    private ?string $email = '';
 
-    private string $message = '';
+    /**
+     * @Assert\NotBlank
+     */
+    private ?string $message = '';
 
-    public function setFullName(string $fullName): self
+    public function setFullName(?string $fullName): self
     {
         $this->fullName = $fullName;
 
         return $this;
     }
 
-    public function getFullName(): string
+    public function getFullName(): ?string
     {
         return $this->fullName;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
 
         $this->email = $email;
@@ -30,20 +41,20 @@ class ContactModel
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
 
         return $this->email;
     }
 
-    public function setMessage(string $message): self
+    public function setMessage(?string $message): self
     {
         $this->message = $message;
 
         return $this;
     }
 
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
         return $this->message;
     }

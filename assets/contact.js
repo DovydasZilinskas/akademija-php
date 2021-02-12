@@ -8,7 +8,11 @@ export const store = new Vuex.Store({
   state: {
     notificationsMessages: [
       { key: "success", notification: "Message has been sent"},
-      { key: "error", notification: "Please try again"},
+      { key: "error", notification: "Server error!"},
+      { key: "data.fullName", notification: "Name field should not be blank."},
+      { key: "data.email", notification: "Email field should not be blank."},
+      { key: "data.message", notification: "Message field should not be blank."},
+      { key: "blank.fields", notification: "Please fill blank fields."},
    ],
    chosenMessage: '',
   },

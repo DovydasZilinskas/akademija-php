@@ -18,13 +18,13 @@ class ContactControllerTest extends WebTestCase
 
         $content = '
         {
-            "fullName": "Dovydas",
+            "fullName": "Name",
             "email": "test@test",
-            "message": "labas"
+            "message": "TEST"
         }
         ';
 
-        $client->request('POST', '/contactpost', ['headers' => ['Content-Type' => 'application/json']], [], [], $content);
+        $client->request('POST', '/contactpost', [], [], ['CONTENT_TYPE' => 'application/json'], $content);
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
@@ -38,5 +38,32 @@ class ContactControllerTest extends WebTestCase
         $this->assertEmailHeaderSame($email, 'To', 'test@test');
 
         $this->assertEmailTextBodyContains($email, 'TEST');
+    }
+
+    public function testGetErrors()
+    {
+        $client = static::createClient();
+
+        $content = '
+        {
+            "fullName": "",
+            "email": "",
+            "message": ""
+        }
+        ';
+
+        $client->request('POST', '/contactpost', [], [], ['CONTENT_TYPE' => 'application/json'], $content);
+
+        $response = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertEquals([
+            "data.fullName" => "This value should not be blank.",
+            "data.email" => "This value should not be blank.",
+            "data.message" => "This value should not be blank.",
+        ], $response);
+
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+
+        $this->assertEmailCount(0);
     }
 }
