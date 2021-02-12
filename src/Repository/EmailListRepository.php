@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\EmailList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,21 +21,17 @@ class EmailListRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return EmailList[] Returns an array of EmailList objects
+    //  * @param string|null $term
     //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    
+    // public function getWithSearchQueryBuilder(?string $term): QueryBuilder
+    // {
+    //     return $this->createQueryBuilder('e')
+    //         ->orderBy('e.id', 'ASC')
+    //         ->setMaxResults(10)
+    //     ;
+    // }
+    
 
     /*
     public function findOneBySomeField($value): ?EmailList
