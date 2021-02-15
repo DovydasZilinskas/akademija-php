@@ -20,7 +20,6 @@
         @verify="onCaptchaVerified"
         @expired="onCaptchaExpired"
         :sitekey="sitekey"
-        :loadRecaptchaScript="true"
         size="invisible"
       ></vue-recaptcha>
 
@@ -62,6 +61,7 @@ export default class Contact extends Vue {
     this.$refs.invisibleRecaptcha.execute();
   }
   onCaptchaVerified(response) {
+    this.$refs.invisibleRecaptcha.reset();
     fetch("/contactpost", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
@@ -97,10 +97,9 @@ export default class Contact extends Vue {
     })
     .catch(error => console.log(error))
   }
-      onCaptchaExpired() {
-      console.log('Expired');
-      this.$refs.invisibleRecaptcha.reset();
-    }
+  onCaptchaExpired() {
+    this.$refs.invisibleRecaptcha.reset();
+  }
 }
 
 </script>
