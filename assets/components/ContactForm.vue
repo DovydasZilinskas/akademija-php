@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2>Contact me</h2>
-    <form v-on:submit.prevent="send">
+    <form @submit.prevent="send">
       <label>Full Name</label>
       <input type="text" v-model="name" placeholder="Name" />
 
@@ -13,6 +13,16 @@
         v-model="emailMessage"
         placeholder="Your text here..."
       ></textarea>
+
+      <vue-recaptcha
+        class="g-recaptcha"
+        ref="invisibleRecaptcha"
+        @verify="onCaptchaVerified"
+        @expired="onCaptchaExpired"
+        :sitekey="sitekey"
+        :loadRecaptchaScript="true"
+        size="invisible"
+      ></vue-recaptcha>
 
       <button type="submit">Send</button>
     </form>
@@ -28,11 +38,12 @@
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component';
-import NotificationsMsg from './Notification'
+import NotificationsMsg from './Notification';
+import VueRecaptcha from 'vue-recaptcha';
 
 @Component({
     components: {
-    NotificationsMsg
+    NotificationsMsg, VueRecaptcha
   },
 })
 export default class Contact extends Vue {
@@ -44,13 +55,22 @@ export default class Contact extends Vue {
       notificationsMsg: "",
       error: false,
       type: "",
+      sitekey: "6Ld2MlUaAAAAABKG7ibjB5iZIXVDLBy_e5sSVLJq",
     }
   }
   send() {
+    this.$refs.invisibleRecaptcha.execute();
+  }
+  onCaptchaVerified(response) {
     fetch("/contactpost", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({fullName: this.name, email: this.email, message: this.emailMessage})
+      body: JSON.stringify({
+        fullName: this.name,
+        email: this.email,
+        message: this.emailMessage,
+        captcha: response
+        })
     })
     .then(res => res.json())
     .then(res => {
@@ -73,9 +93,14 @@ export default class Contact extends Vue {
         this.emailMessage = "";
         this.type = ""
       }
+      console.log(res);
     })
     .catch(error => console.log(error))
   }
+      onCaptchaExpired() {
+      console.log('Expired');
+      this.$refs.invisibleRecaptcha.reset();
+    }
 }
 
 </script>

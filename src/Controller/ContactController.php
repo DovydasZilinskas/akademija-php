@@ -19,15 +19,13 @@ class ContactController extends AbstractController
 
     #[Route("/contactpost", name: "contact.post")]
     
-    public function renderForm(Request $request, EventDispatcherInterface $dispatcher, ReCaptcha $reCaptcha, SerializerInterface $serializerInterface)
+    public function renderForm(Request $request, EventDispatcherInterface $dispatcher, SerializerInterface $serializerInterface)
     {
-        $response = new JsonResponse(['data' => 123]);
+        $response = new JsonResponse(['data' => 'response']);
 
         $contact = new ContactModel();
 
         $form = $this->createForm(ContactType::class, $contact);
-
-        // $reCaptcha = $request->get('g-recaptcha-response', '');
 
         $data = $request->request->all();
 
@@ -43,18 +41,13 @@ class ContactController extends AbstractController
 
         $errors = [];
         foreach ($form->getErrors(true, true) as $formError) {
-            $errors[$formError->getCause()->getPropertyPath()] = $formError->getMessage();
+            $errors[$formError->getCause() ? $formError->getCause()->getPropertyPath() : 'some error'] = $formError->getMessage();
         }
-
 
         if (sizeof($errors)) {
             return new Response($serializerInterface->serialize($errors, 'json'), 400, ['Content-Type' => 'application/json']);
         }
 
         return $response;
-
-        // if ($form->isSubmitted() && !$reCaptcha) {
-        //     $this->addFlash('error', 'Please check reCaptcha checkbox!');
-        // }
     }
 }

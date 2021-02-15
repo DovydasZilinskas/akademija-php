@@ -2,8 +2,7 @@
 
 namespace App\Form;
 
-use Beelab\Recaptcha2Bundle\Form\Type\RecaptchaType;
-use Beelab\Recaptcha2Bundle\Validator\Constraints\Recaptcha2;
+use Beelab\Recaptcha2Bundle\Form\Type\RecaptchaSubmitType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,15 +28,15 @@ class ContactType extends AbstractType
                 'attr' => ['rows' => 6, 'maxlength' => 255],
             ])
             ->add('submit', SubmitType::class)
-            ->add('captcha', RecaptchaType::class, [
-                'constraints' => new Recaptcha2(['groups' => ['create']])
+            ->add('captcha', RecaptchaSubmitType::class, [
+                'label' => 'Save'
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'csrf_protection' => false,
+            'csrf_protection' => false
             // 'data_class' => Contact::class,
         ]);
     }
