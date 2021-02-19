@@ -4,7 +4,8 @@
 
 {% block body %}
     <h1>Email List</h1>
-    <div class="wrapper">
+    <div id="emails"></div>
+    {# <div class="wrapper">
         <table>
             <tr>
                 <th>ID</th>
@@ -26,7 +27,11 @@
         <div class="navigation">
             {{ knp_pagination_render(pagination) }}
         </div>
-    </div>
+        
+    </div> #}
+            {# <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div> #}
 {% block stylesheets %}
 	<link href="{{ asset('css/form.css') }}" rel="stylesheet"/>
 {% endblock %}

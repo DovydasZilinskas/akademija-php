@@ -93,7 +93,6 @@ export default class Contact extends Vue {
         this.emailMessage = "";
         this.type = ""
       }
-      console.log(res);
     })
     .catch(error => console.log(error))
   }

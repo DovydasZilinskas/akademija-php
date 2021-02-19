@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\EmailList;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,17 +21,36 @@ class EmailListRepository extends ServiceEntityRepository
         parent::__construct($registry, EmailList::class);
     }
 
+
+    // /**
+    //  * @return EmailList[]
+    //  */
+    // public function findTimestamp(): DateTime
+    // {
+    //     $entityManager = $this->getEntityManager();
+
+    //     $query = $entityManager->createQuery(
+    //         'SELECT UPDATE_TIME
+    //         FROM   information_schema.tables
+    //         WHERE  TABLE_SCHEMA = `portfolio`
+    //         AND TABLE_NAME = `email_list`'
+    //         );
+
+    //     return $query->getResult();
+    // }
+
     // /**
     //  * @param string|null $term
     //  */
     
-    // public function getWithSearchQueryBuilder(?string $term): QueryBuilder
-    // {
-    //     return $this->createQueryBuilder('e')
-    //         ->orderBy('e.id', 'ASC')
-    //         ->setMaxResults(10)
-    //     ;
-    // }
+    public function getWithSearchQueryBuilder(): string
+    {
+        return $this->createQueryBuilder('e')
+            ->select('count(e.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
     
 
     /*
