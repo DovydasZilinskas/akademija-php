@@ -31,7 +31,9 @@ class ContactController extends AbstractController
 
         $form->submit($data, false);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $recaptcha = $request->request->get('captcha', null, true);
+
+        if ($form->isSubmitted() && $form->isValid() && $recaptcha) {
             $event = new ContactEvent($contact);
 
             $dispatcher->dispatch($event, ContactEvent::NAME);

@@ -3,13 +3,14 @@
     <h2>Contact me</h2>
     <form @submit.prevent="send">
       <label>Full Name</label>
-      <input type="text" v-model="name" placeholder="Name" />
+      <input type="text" maxlength="255" v-model="name" placeholder="Name" />
 
       <label>Email</label>
-      <input type="email" v-model="email" placeholder="Email" />
+      <input type="email" maxlength="255" v-model="email" placeholder="Email" />
 
       <label>Message</label>
       <textarea
+        maxlength="255"
         v-model="emailMessage"
         placeholder="Your text here..."
       ></textarea>
