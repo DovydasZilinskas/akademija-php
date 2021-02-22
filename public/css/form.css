@@ -141,6 +141,8 @@ button#contact_submit:hover {
     text-align: center;
 }
 
+/* table */
+
 table {
     border-collapse: collapse;
     max-width: 100%;
@@ -171,4 +173,23 @@ td:first-child {
 td:nth-child(4) {
     word-break: break-all;
     width: 52%;
+}
+
+@media only screen and (max-width: 768px) {
+    .wrapper {
+        width: 280px;
+        background-color: #F2EDE9;
+        padding: 5px;
+    }
+
+    input {
+        width: 240px;
+    }
+
+    .container {
+        width: 280px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    } 
 }

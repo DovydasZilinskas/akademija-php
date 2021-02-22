@@ -167,3 +167,45 @@ nav a:hover {
 .contacts a {
     margin-bottom: 5px;
 }
+
+@media only screen and (max-width: 768px) {
+    .wrapper {
+        max-width: 700px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .left-section {
+        border-radius: 0;
+        flex: 1;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .right-section {
+        border-radius: 0;
+        flex: 1;
+        padding: 10px;
+    }
+
+    .circle {
+        position: static;
+        right: 0;
+        background: none;
+        padding: 10px;
+        border-radius: 0;
+        border: 10px solid #F2E6D8;
+    }
+
+    .left-section img {
+        width: 245px;
+        border-radius: 50%;
+        filter: sepia(40%);
+    }
+
+    .skills {
+        margin-top: 10px;
+    }
+}

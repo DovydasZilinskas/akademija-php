@@ -94,12 +94,6 @@ export default class EmailList extends Vue {
   get indexEnd() {
       return this.indexStart + this.pageSize;
   }
-  // beforeDestroy () {
-  //   clearInterval(this.polling);
-  // }
-  // created(){
-  //   this.retrieveData();
-  // }
 }
 </script>
 

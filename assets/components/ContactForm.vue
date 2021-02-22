@@ -147,5 +147,11 @@ textarea {
 .error {
   background: #f16157;
 }
+
+@media only screen and (max-width: 376px) {
+  .container {
+    width: 230px;
+  }
+}
 </style>
 
