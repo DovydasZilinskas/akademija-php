@@ -10,10 +10,10 @@
         <th>Actions</th>
       </tr>
       <tr v-for="item in paginated" :key="item.id">
-        <td>{{item.id}}</td>
-        <td>{{item.email}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.message}}</td>
+        <td>{{ item.id }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.message }}</td>
         <td><button @click.prevent="deleteItem(item)">Delete</button></td>
       </tr>
     </table>
@@ -28,32 +28,42 @@
 import Vue from 'vue'
 import Component from 'vue-class-component';
 
-@Component({
-  computed: {
-    indexStart() {
-      return (this.current - 1) * this.pageSize;
-    },
-    indexEnd() {
-      return this.indexStart + this.pageSize;
-    },
-    paginated() {
-      return this.data.slice(this.indexStart, this.indexEnd);
-    }
-  },
-})
+@Component
 export default class EmailList extends Vue {
   data() {
     return {
       current: 1,
       pageSize: 10,
       data: [],
+      newData: []
     }
   }
-  mounted() {
+  retrieveData() {
     fetch("/getemail")
-    .then(res => res.json())
-    .then(res => this.data = res)
-    .catch(error => console.log(error));
+      .then(res => res.json())
+      .then(res => {
+          this.data = res;
+        })
+      .catch(error => console.log(error)) 
+  }
+  retrieveNewData() {
+      fetch("/getemail")
+      .then(res => res.json())
+      .then(res => {
+          this.newData = res;
+        })
+      .catch(error => console.log(error)) 
+  }
+  mounted() {
+    this.retrieveNewData();
+    setInterval(() => {
+      if (this.data = this.newData) {
+        this.retrieveNewData();
+        console.log("No new data");
+      } else {
+        this.retrieveData();
+      }     
+    }, 3000);
   }
   deleteItem(item) {
     if (confirm("Are you sure you want to delete this item?")) {
@@ -75,6 +85,21 @@ export default class EmailList extends Vue {
   next() {
     this.current++;
   }
+  get paginated() {
+      return this.data.slice(this.indexStart, this.indexEnd);
+  }
+  get indexStart() {
+      return (this.current - 1) * this.pageSize;
+  }
+  get indexEnd() {
+      return this.indexStart + this.pageSize;
+  }
+  // beforeDestroy () {
+  //   clearInterval(this.polling);
+  // }
+  // created(){
+  //   this.retrieveData();
+  // }
 }
 </script>
 

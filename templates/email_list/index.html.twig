@@ -32,6 +32,9 @@
             {# <div class="navigation">
             {{ knp_pagination_render(pagination) }}
         </div> #}
+		{% block javascripts %}
+			{{ encore_entry_script_tags('emails') }}
+		{% endblock %}
 {% block stylesheets %}
 	<link href="{{ asset('css/form.css') }}" rel="stylesheet"/>
 {% endblock %}
