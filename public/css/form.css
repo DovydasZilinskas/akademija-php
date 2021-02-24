@@ -166,11 +166,7 @@ tr:last-child td {
     border-bottom: 0;
 }
 
-td:first-child {
-    text-align: center;
-}
-
-td:nth-child(4) {
+td:nth-child(3) {
     word-break: break-all;
     width: 52%;
 }

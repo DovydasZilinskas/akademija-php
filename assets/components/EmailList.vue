@@ -1,25 +1,26 @@
 <template>
   <div class="wrapper">
-    <span>Page: {{ current }}</span>
+    <span>Page: {{ current }} of {{ pageCount }}</span>
     <table>
       <tr>
-        <th>ID</th>
         <th>Email</th>
         <th>Full Name</th>
         <th>Message</th>
         <th>Actions</th>
       </tr>
       <tr v-for="item in paginated" :key="item.id">
-        <td>{{ item.id }}</td>
         <td>{{ item.email }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.message }}</td>
         <td><button @click.prevent="deleteItem(item)">Delete</button></td>
       </tr>
     </table>
-    <nav>
+    <nav v-if="loaded">
       <a @click="prev()">Prev</a>
       <a @click="next()">Next</a>
+    </nav>
+    <nav v-else>
+      <Spinner :start="spin" />
     </nav>
   </div>
 </template>
@@ -27,14 +28,20 @@
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component';
+import Spinner from './Spinner';
 
-@Component
+@Component({
+  components: {Spinner}
+})
 export default class EmailList extends Vue {
   data() {
     return {
       current: 1,
       pageSize: 10,
-      data: []
+      data: [],
+      spin: true,
+      loaded: false,
+      pageCount: "",
     }
   }
   mounted() {
@@ -42,6 +49,9 @@ export default class EmailList extends Vue {
       .then(res => res.json())
       .then(res => {
           this.data = res;
+          this.spin = false;
+          this.loaded = true;
+          this.pageCount = Math.ceil(res.length / this.pageSize);
         })
       .catch(error => console.log(error)) 
   }

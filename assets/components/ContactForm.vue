@@ -24,7 +24,7 @@
         size="invisible"
       ></vue-recaptcha>
 
-      <button type="submit">Send</button>
+      <button type="submit" @click="spin = !spin">Send</button>
     </form>
     <NotificationsMsg
       v-if="error"
@@ -32,6 +32,7 @@
       v-on:displaynot="error = false"
       :type="type"
     />
+    <Spinner :start="spin" />
   </div>
 </template>
 
@@ -40,10 +41,11 @@ import Vue from 'vue'
 import Component from 'vue-class-component';
 import NotificationsMsg from './Notification';
 import VueRecaptcha from 'vue-recaptcha';
+import Spinner from './Spinner';
 
 @Component({
     components: {
-    NotificationsMsg, VueRecaptcha
+    NotificationsMsg, VueRecaptcha, Spinner
   },
 })
 export default class Contact extends Vue {
@@ -56,6 +58,7 @@ export default class Contact extends Vue {
       error: false,
       type: "",
       sitekey: "6Ld2MlUaAAAAABKG7ibjB5iZIXVDLBy_e5sSVLJq",
+      spin: false,
     }
   }
   send() {
@@ -79,12 +82,14 @@ export default class Contact extends Vue {
         this.error = true;
         this.$store.commit('error', 'blank.fields');
         this.notificationsMsg = this.$store.getters.messageToDisplay;
-        this.type = "error"
+        this.type = "error";
+        this.spin = false;
       } else if (Object.values(res) != "success" ) {
         this.error = true;
         this.$store.commit('error', Object.keys(res));
         this.notificationsMsg = this.$store.getters.messageToDisplay;
-        this.type = "error"
+        this.type = "error";
+        this.spin = false;
       } else {
         this.error = true;
         this.$store.commit('success', Object.values(res));
@@ -92,7 +97,8 @@ export default class Contact extends Vue {
         this.email = "";
         this.name = "";
         this.emailMessage = "";
-        this.type = ""
+        this.type = "";
+        this.spin = false;
       }
     })
     .catch(error => console.log(error))
