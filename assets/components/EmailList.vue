@@ -34,36 +34,16 @@ export default class EmailList extends Vue {
     return {
       current: 1,
       pageSize: 10,
-      data: [],
-      newData: []
+      data: []
     }
   }
-  retrieveData() {
+  mounted() {
     fetch("/getemail")
       .then(res => res.json())
       .then(res => {
           this.data = res;
         })
       .catch(error => console.log(error)) 
-  }
-  retrieveNewData() {
-      fetch("/getemail")
-      .then(res => res.json())
-      .then(res => {
-          this.newData = res;
-        })
-      .catch(error => console.log(error)) 
-  }
-  mounted() {
-    this.retrieveNewData();
-    setInterval(() => {
-      if (this.data = this.newData) {
-        this.retrieveNewData();
-        console.log("No new data");
-      } else {
-        this.retrieveData();
-      }     
-    }, 3000);
   }
   deleteItem(item) {
     if (confirm("Are you sure you want to delete this item?")) {

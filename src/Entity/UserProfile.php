@@ -50,7 +50,7 @@ class UserProfile
     private string $subtitle;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=600)
      */
     private string $description;
 

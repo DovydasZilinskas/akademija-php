@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EmailListRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +32,16 @@ class EmailList
      * @ORM\Column(type="string", length=255)
      */
     private string $message;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private DateTime $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTime('now');
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +80,18 @@ class EmailList
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

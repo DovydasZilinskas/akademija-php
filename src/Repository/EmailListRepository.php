@@ -51,7 +51,6 @@ class EmailListRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
-    
 
     /*
     public function findOneBySomeField($value): ?EmailList
