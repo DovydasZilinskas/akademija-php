@@ -40,31 +40,31 @@ class ContactControllerTest extends WebTestCase
     //     $this->assertEmailTextBodyContains($email, 'TEST');
     // }
 
-    public function testGetErrors()
-    {
-        $client = static::createClient();
+    // public function testGetErrors()
+    // {
+    //     $client = static::createClient();
 
-        $content = '
-        {
-            "fullName": "",
-            "email": "",
-            "message": "",
-            "captcha": "wrong"
-        }
-        ';
+    //     $content = '
+    //     {
+    //         "fullName": "",
+    //         "email": "",
+    //         "message": "",
+    //         "captcha": "wrong"
+    //     }
+    //     ';
 
-        $client->request('POST', '/contactpost', [], [], ['CONTENT_TYPE' => 'application/json'], $content);
+    //     $client->request('POST', '/contactpost', [], [], ['CONTENT_TYPE' => 'application/json'], $content);
 
-        $response = json_decode($client->getResponse()->getContent(), true);
+    //     $response = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertEquals([
-            "data.fullName" => "This value should not be blank.",
-            "data.email" => "This value should not be blank.",
-            "data.message" => "This value should not be blank.",
-        ], $response);
+    //     $this->assertEquals([
+    //         "data.fullName" => "This value should not be blank.",
+    //         "data.email" => "This value should not be blank.",
+    //         "data.message" => "This value should not be blank.",
+    //     ], $response);
 
-        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+    //     $this->assertEquals(400, $client->getResponse()->getStatusCode());
 
-        $this->assertEmailCount(0);
-    }
+    //     $this->assertEmailCount(0);
+    // }
 }

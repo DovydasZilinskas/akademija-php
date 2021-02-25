@@ -24,18 +24,32 @@ class EmailListController extends AbstractController
     }
 
     #[Route('/getemail', name: 'get_email')]
-    public function index(SerializerInterface $serializerInterface)
+    public function index(SerializerInterface $serializerInterface, Request $request)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Insufficient access rights!');
 
         $em = $this->getDoctrine()->getManager();
-        
+
+        $name = $request->query->get('name');
+        $email = $request->query->get('email');
+        $message = $request->query->get('message');
+        $orderBy = $request->query->get('orderby', 'createdAt');
+        $order = $request->query->get('order', 'DESC');
+
         /**
          * @var EmailListRepository
          */
         $repo = $em->getRepository(EmailList::class);
         
-        $data = $serializerInterface->serialize($repo->findBy([], ['createdAt' => 'DESC']), 'json');
+        if ($name) {
+            $data = $serializerInterface->serialize($repo->getSearchName($name, $orderBy, $order), 'json');
+        } elseif ($email) {
+            $data = $serializerInterface->serialize($repo->getSearchEmail($email, $orderBy, $order), 'json');
+        } elseif ($message) {
+            $data = $serializerInterface->serialize($repo->getSearchMessage($message, $orderBy, $order), 'json');
+        } else {
+            $data = $serializerInterface->serialize($repo->findBy([], [$orderBy => $order]), 'json');
+        }
 
         return new Response($data, 200, ['Content-Type' => 'application/json']);
     }

@@ -1,24 +1,26 @@
 <template>
   <div class="wrapper">
-    <span>Page: {{ current }} of {{ pageCount }}</span>
-    <table>
-      <tr>
-        <th>Email</th>
-        <th>Full Name</th>
-        <th>Message</th>
-        <th>Actions</th>
-      </tr>
-      <tr v-for="item in paginated" :key="item.id">
-        <td>{{ item.email }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.message }}</td>
-        <td><button @click.prevent="deleteItem(item)">Delete</button></td>
-      </tr>
-    </table>
-    <nav v-if="loaded">
-      <a @click="prev()">Prev</a>
-      <a @click="next()">Next</a>
-    </nav>
+    <div class="ifloaded" v-if="loaded">
+      <span>Page: {{ current }} of {{ pageCount }}</span>
+      <table>
+        <tr>
+          <th>Email</th>
+          <th>Full Name</th>
+          <th>Message</th>
+          <th>Actions</th>
+        </tr>
+        <tr v-for="item in paginated" :key="item.id">
+          <td>{{ item.email }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.message }}</td>
+          <td><button @click.prevent="deleteItem(item)">Delete</button></td>
+        </tr>
+      </table>
+      <nav>
+        <a @click="prev()">Prev</a>
+        <a @click="next()">Next</a>
+      </nav>
+    </div>
     <nav v-else>
       <Spinner :start="spin" />
     </nav>
@@ -97,5 +99,11 @@ nav {
 nav a {
   font-weight: bold;
   cursor: pointer;
+}
+
+.ifloaded {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

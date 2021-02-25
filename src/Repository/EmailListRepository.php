@@ -20,28 +20,6 @@ class EmailListRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, EmailList::class);
     }
-
-
-    // /**
-    //  * @return EmailList[]
-    //  */
-    // public function findTimestamp(): DateTime
-    // {
-    //     $entityManager = $this->getEntityManager();
-
-    //     $query = $entityManager->createQuery(
-    //         'SELECT UPDATE_TIME
-    //         FROM   information_schema.tables
-    //         WHERE  TABLE_SCHEMA = `portfolio`
-    //         AND TABLE_NAME = `email_list`'
-    //         );
-
-    //     return $query->getResult();
-    // }
-
-    // /**
-    //  * @param string|null $term
-    //  */
     
     public function getWithSearchQueryBuilder(): string
     {
@@ -50,6 +28,56 @@ class EmailListRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+    }
+
+    public function getSearchName($name, $orderBy, $order)
+    {
+        $qp = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where("a.name LIKE '%$name%'");
+        if ($orderBy == 'name') {
+            return $qp->orderBy('a.name', $order)->getQuery()->getResult();
+        } elseif ($orderBy == 'email') {
+            return $qp->orderBy('a.email', $order)->getQuery()->getResult();
+        } elseif ($orderBy == 'message') {
+            return $qp->orderBy('a.message', $order)->getQuery()->getResult();
+        } else {
+            return $qp->orderBy('a.createdAt', $order)->getQuery()->getResult();
+        }
+    }
+
+    public function getSearchMessage($message, $orderBy, $order)
+    {
+        $qp = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where("a.message LIKE '%$message%'")
+            ->orderBy("a.'%$orderBy%'", "'%$order%'");
+        if ($orderBy == 'name') {
+            return $qp->orderBy('a.name', $order)->getQuery()->getResult();
+        } elseif ($orderBy == 'email') {
+            return $qp->orderBy('a.email', $order)->getQuery()->getResult();
+        } elseif ($orderBy == 'message') {
+            return $qp->orderBy('a.message', $order)->getQuery()->getResult();
+        } else {
+            return $qp->orderBy('a.createdAt', $order)->getQuery()->getResult();
+        }
+    }
+
+    public function getSearchEmail($email, $orderBy, $order)
+    {
+        $qp = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where("a.email LIKE '%$email%'")
+            ->orderBy("a.'%$orderBy%'", "'%$order%'");
+        if ($orderBy == 'name') {
+            return $qp->orderBy('a.name', $order)->getQuery()->getResult();
+        } elseif ($orderBy == 'email') {
+            return $qp->orderBy('a.email', $order)->getQuery()->getResult();
+        } elseif ($orderBy == 'message') {
+            return $qp->orderBy('a.message', $order)->getQuery()->getResult();
+        } else {
+            return $qp->orderBy('a.createdAt', $order)->getQuery()->getResult();
+        }
     }
 
     /*
