@@ -36,13 +36,13 @@ class EmailListRepository extends ServiceEntityRepository
             ->select('a')
             ->where("a.name LIKE '%$name%'");
         if ($orderBy == 'name') {
-            return $qp->orderBy('a.name', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.name', $order)->getQuery();
         } elseif ($orderBy == 'email') {
-            return $qp->orderBy('a.email', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.email', $order)->getQuery();
         } elseif ($orderBy == 'message') {
-            return $qp->orderBy('a.message', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.message', $order)->getQuery();
         } else {
-            return $qp->orderBy('a.createdAt', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.createdAt', $order)->getQuery();
         }
     }
 
@@ -53,13 +53,13 @@ class EmailListRepository extends ServiceEntityRepository
             ->where("a.message LIKE '%$message%'")
             ->orderBy("a.'%$orderBy%'", "'%$order%'");
         if ($orderBy == 'name') {
-            return $qp->orderBy('a.name', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.name', $order)->getQuery();
         } elseif ($orderBy == 'email') {
-            return $qp->orderBy('a.email', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.email', $order)->getQuery();
         } elseif ($orderBy == 'message') {
-            return $qp->orderBy('a.message', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.message', $order)->getQuery();
         } else {
-            return $qp->orderBy('a.createdAt', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.createdAt', $order)->getQuery();
         }
     }
 
@@ -70,13 +70,29 @@ class EmailListRepository extends ServiceEntityRepository
             ->where("a.email LIKE '%$email%'")
             ->orderBy("a.'%$orderBy%'", "'%$order%'");
         if ($orderBy == 'name') {
-            return $qp->orderBy('a.name', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.name', $order)->getQuery();
         } elseif ($orderBy == 'email') {
-            return $qp->orderBy('a.email', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.email', $order)->getQuery();
         } elseif ($orderBy == 'message') {
-            return $qp->orderBy('a.message', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.message', $order)->getQuery();
         } else {
-            return $qp->orderBy('a.createdAt', $order)->getQuery()->getResult();
+            return $qp->orderBy('a.createdAt', $order)->getQuery();
+        }
+    }
+
+    public function getAllFiltered($orderBy, $order)
+    {
+        $qp = $this->createQueryBuilder('a')
+            ->select('a')
+            ->orderBy("a.'%$orderBy%'", "'%$order%'");
+        if ($orderBy == 'name') {
+            return $qp->orderBy('a.name', $order)->getQuery();
+        } elseif ($orderBy == 'email') {
+            return $qp->orderBy('a.email', $order)->getQuery();
+        } elseif ($orderBy == 'message') {
+            return $qp->orderBy('a.message', $order)->getQuery();
+        } else {
+            return $qp->orderBy('a.createdAt', $order)->getQuery();
         }
     }
 

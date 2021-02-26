@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\EmailList;
 use Doctrine\ORM\Mapping\Id;
 use App\Repository\EmailListRepository;
-use Knp\Component\Pager\PaginatorInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,23 +35,33 @@ class EmailListController extends AbstractController
         $message = $request->query->get('message');
         $orderBy = $request->query->get('orderby', 'createdAt');
         $order = $request->query->get('order', 'DESC');
+        $page = $request->query->get('page');
 
         /**
          * @var EmailListRepository
          */
         $repo = $em->getRepository(EmailList::class);
-        
+
         if ($name) {
-            $data = $serializerInterface->serialize($repo->getSearchName($name, $orderBy, $order), 'json');
+            $data = $repo->getSearchName($name, $orderBy, $order);
         } elseif ($email) {
-            $data = $serializerInterface->serialize($repo->getSearchEmail($email, $orderBy, $order), 'json');
+            $data = $repo->getSearchEmail($email, $orderBy, $order);
         } elseif ($message) {
-            $data = $serializerInterface->serialize($repo->getSearchMessage($message, $orderBy, $order), 'json');
+            $data = $repo->getSearchMessage($message, $orderBy, $order);
         } else {
-            $data = $serializerInterface->serialize($repo->findBy([], [$orderBy => $order]), 'json');
+            $data = $repo->getAllFiltered($orderBy, $order);
         }
 
-        return new Response($data, 200, ['Content-Type' => 'application/json']);
+        $pageSize = 10;
+        $paginator = new Paginator($data);
+        $paginator
+            ->getQuery()
+            ->setFirstResult($pageSize * ($page-1))
+            ->setMaxResults($pageSize);
+
+        $paginated = $serializerInterface->serialize($paginator, 'json');
+
+        return new Response($paginated, 200, ['Content-Type' => 'application/json']);
     }
 
     #[Route('/deleteemail/{id}', name: 'email_delete', methods: ['DELETE'])]
