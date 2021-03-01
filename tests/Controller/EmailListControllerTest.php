@@ -34,9 +34,26 @@ class EmailListControllerTest extends WebTestCase
 
         $client->request('GET', '/getemail?name=Dovy');
 
-        $data = '[{"id":227614,"name":"Dovydas","email":"email@email","message":"test spinner","createdAt":"2021-02-24T17:05:23+00:00"}]';
+        $expected = count(json_decode($client->getResponse()->getContent()));
 
-        $this->assertEquals($data, $client->getResponse()->getContent());
+        $this->assertEquals(3, $expected);
+    }
+
+    public function testFilterResults()
+    {
+        $client = static::createClient();
+
+        $userRepository = static::$container->get(UserRepository::class);
+
+        $testUser = $userRepository->findOneByEmail('admin@admin');
+
+        $client->loginUser($testUser);
+
+        $client->request('GET', '/getemail?name=Dovy&email=email');
+
+        $expected = count(json_decode($client->getResponse()->getContent()));
+
+        $this->assertEquals(2, $expected);
     }
 
     public function testGetMessageResults()
@@ -56,7 +73,7 @@ class EmailListControllerTest extends WebTestCase
         $this->assertEquals($data, $client->getResponse()->getContent());
     }
 
-    public function testGetEmailResults()
+    public function testArrayResult()
     {
         $client = static::createClient();
 
@@ -66,10 +83,18 @@ class EmailListControllerTest extends WebTestCase
 
         $client->loginUser($testUser);
 
-        $client->request('GET', '/getemail?email=email@email');
+        $client->request('GET', '/getemail?name=dovy&message=kazkas');
 
-        $data = '[{"id":227614,"name":"Dovydas","email":"email@email","message":"test spinner","createdAt":"2021-02-24T17:05:23+00:00"}]';
+        $data = [[
+            'id' => 227615,
+            'name' => 'Dovydas',
+            'email' => 'test@email2',
+            'message' => 'kazkas',
+            'createdAt' => '2021-02-25T00:00:00+00:00'
+        ]];
 
-        $this->assertEquals($data, $client->getResponse()->getContent());
+        $actualData = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertEquals($data, $actualData);
     }
 }

@@ -30,26 +30,20 @@ class EmailListController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        $name = $request->query->get('name');
-        $email = $request->query->get('email');
-        $message = $request->query->get('message');
+        $search = $request->query->all();
         $orderBy = $request->query->get('orderby', 'createdAt');
         $order = $request->query->get('order', 'DESC');
-        $page = $request->query->get('page');
+        $page = $request->query->get('page', '1');
 
         /**
          * @var EmailListRepository
          */
         $repo = $em->getRepository(EmailList::class);
 
-        if ($name) {
-            $data = $repo->getSearchName($name, $orderBy, $order);
-        } elseif ($email) {
-            $data = $repo->getSearchEmail($email, $orderBy, $order);
-        } elseif ($message) {
-            $data = $repo->getSearchMessage($message, $orderBy, $order);
-        } else {
+        if (count($search) == 0) {
             $data = $repo->getAllFiltered($orderBy, $order);
+        } else {
+            $data = $repo->getSearchValues($search, $orderBy, $order);
         }
 
         $pageSize = 10;

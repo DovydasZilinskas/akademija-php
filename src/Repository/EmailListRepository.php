@@ -20,91 +20,35 @@ class EmailListRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, EmailList::class);
     }
-    
-    public function getWithSearchQueryBuilder(): string
-    {
-        return $this->createQueryBuilder('e')
-            ->select('count(e.id)')
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
 
-    public function getSearchName($name, $orderBy, $order)
+    public function getSearchValues(array $search, $orderBy, $order)
     {
-        $qp = $this->createQueryBuilder('a')
-            ->select('a')
-            ->where("a.name LIKE '%$name%'");
-        if ($orderBy == 'name') {
-            return $qp->orderBy('a.name', $order)->getQuery();
-        } elseif ($orderBy == 'email') {
-            return $qp->orderBy('a.email', $order)->getQuery();
-        } elseif ($orderBy == 'message') {
-            return $qp->orderBy('a.message', $order)->getQuery();
-        } else {
-            return $qp->orderBy('a.createdAt', $order)->getQuery();
+        $qp = $this->createQueryBuilder('a');
+        foreach ($search as $field => $value) {
+            switch ($field) {
+                case 'name':
+                    $qp->andWhere("a.name LIKE '%$value%'");
+                    break;
+                case 'email':
+                    $qp->andWhere("a.email LIKE '%$value%'");
+                    break;
+                case 'message':
+                    $qp->andWhere("a.message LIKE '%$value%'");
+                    break;
+                case 'datefrom':
+                    $qp->andWhere("a.createdAt >= '$value'");
+                    break;
+                case 'dateto':
+                    $qp->andWhere("a.createdAt <= '$value'");
+                    break;
+            }
         }
-    }
-
-    public function getSearchMessage($message, $orderBy, $order)
-    {
-        $qp = $this->createQueryBuilder('a')
-            ->select('a')
-            ->where("a.message LIKE '%$message%'")
-            ->orderBy("a.'%$orderBy%'", "'%$order%'");
-        if ($orderBy == 'name') {
-            return $qp->orderBy('a.name', $order)->getQuery();
-        } elseif ($orderBy == 'email') {
-            return $qp->orderBy('a.email', $order)->getQuery();
-        } elseif ($orderBy == 'message') {
-            return $qp->orderBy('a.message', $order)->getQuery();
-        } else {
-            return $qp->orderBy('a.createdAt', $order)->getQuery();
-        }
-    }
-
-    public function getSearchEmail($email, $orderBy, $order)
-    {
-        $qp = $this->createQueryBuilder('a')
-            ->select('a')
-            ->where("a.email LIKE '%$email%'")
-            ->orderBy("a.'%$orderBy%'", "'%$order%'");
-        if ($orderBy == 'name') {
-            return $qp->orderBy('a.name', $order)->getQuery();
-        } elseif ($orderBy == 'email') {
-            return $qp->orderBy('a.email', $order)->getQuery();
-        } elseif ($orderBy == 'message') {
-            return $qp->orderBy('a.message', $order)->getQuery();
-        } else {
-            return $qp->orderBy('a.createdAt', $order)->getQuery();
-        }
+        return $qp->orderBy('a.'.$orderBy, $order);
     }
 
     public function getAllFiltered($orderBy, $order)
     {
-        $qp = $this->createQueryBuilder('a')
-            ->select('a')
-            ->orderBy("a.'%$orderBy%'", "'%$order%'");
-        if ($orderBy == 'name') {
-            return $qp->orderBy('a.name', $order)->getQuery();
-        } elseif ($orderBy == 'email') {
-            return $qp->orderBy('a.email', $order)->getQuery();
-        } elseif ($orderBy == 'message') {
-            return $qp->orderBy('a.message', $order)->getQuery();
-        } else {
-            return $qp->orderBy('a.createdAt', $order)->getQuery();
-        }
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.'.$orderBy, $order)->getQuery();
     }
-
-    /*
-    public function findOneBySomeField($value): ?EmailList
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
