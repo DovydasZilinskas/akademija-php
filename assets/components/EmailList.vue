@@ -28,63 +28,61 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import Component from 'vue-class-component';
-import Spinner from './Spinner';
+import Vue from "vue";
+import Component from "vue-class-component";
+import Spinner from "./Spinner";
 
 @Component({
-  components: {Spinner}
+  components: { Spinner }
 })
 export default class EmailList extends Vue {
-  data() {
-    return {
-      current: 1,
-      pageSize: 10,
-      data: [],
-      spin: true,
-      loaded: false,
-      pageCount: "",
-    }
-  }
+  current = 1;
+  pageSize = 10;
+  data = [];
+  spin = true;
+  loaded = false;
+  pageCount = "";
+
   mounted() {
     fetch("/getemail")
       .then(res => res.json())
       .then(res => {
-          this.data = res;
-          this.spin = false;
-          this.loaded = true;
-          this.pageCount = Math.ceil(res.length / this.pageSize);
-        })
-      .catch(error => console.log(error)) 
+        this.data = res;
+        this.spin = false;
+        this.loaded = true;
+        this.pageCount = Math.ceil(res.length / this.pageSize);
+      })
+      .catch(error => console.log(error));
   }
   deleteItem(item) {
     if (confirm("Are you sure you want to delete this item?")) {
-    fetch("/deleteemail/" + item.id, {
-      method: "DELETE"
-    }).then(res => {
-      this.data.splice(this.data.indexOf(item.id), 1)
+      fetch("/deleteemail/" + item.id, {
+        method: "DELETE"
       })
-      .catch(error => console.log(error))
+        .then(() => {
+          this.data.splice(this.data.indexOf(item.id), 1);
+        })
+        .catch(error => console.log(error));
     } else {
       console.log("No delete");
     }
   }
   prev() {
     if (this.current >= 2) {
-    this.current--;
+      this.current--;
     }
   }
   next() {
     this.current++;
   }
   get paginated() {
-      return this.data.slice(this.indexStart, this.indexEnd);
+    return this.data.slice(this.indexStart, this.indexEnd);
   }
   get indexStart() {
-      return (this.current - 1) * this.pageSize;
+    return (this.current - 1) * this.pageSize;
   }
   get indexEnd() {
-      return this.indexStart + this.pageSize;
+    return this.indexStart + this.pageSize;
   }
 }
 </script>
