@@ -59,20 +59,11 @@ import { mapState } from "vuex";
   // }
 })
 export default class Contact extends Vue {
-  // name = "";
-  // emailMessage = "";
-  // email = "";
   error = false;
   type = "";
   sitekey = "6Ld2MlUaAAAAABKG7ibjB5iZIXVDLBy_e5sSVLJq";
   spin = false;
   notificationsMsg = "";
-
-  // mounted() {
-  //   this.name = this.$store.getters.getCurrentName;
-  //   this.emailMessage = this.$store.getters.getCurrentMessage;
-  //   this.email = this.$store.getters.getCurrentEmail;
-  // }
 
   send() {
     this.$refs.invisibleRecaptcha.execute();

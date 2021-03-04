@@ -48,6 +48,7 @@ class EmailListController extends AbstractController
 
         $pageSize = 10;
         $paginator = new Paginator($data);
+        $totalItems = count($paginator);
         $paginator
             ->getQuery()
             ->setFirstResult($pageSize * ($page-1))
@@ -55,7 +56,7 @@ class EmailListController extends AbstractController
 
         $paginated = $serializerInterface->serialize($paginator, 'json');
 
-        return new Response($paginated, 200, ['Content-Type' => 'application/json']);
+        return new Response($paginated, 200, ['Content-Type' => 'application/json', 'totalItems' => $totalItems]);
     }
 
     #[Route('/deleteemail/{id}', name: 'email_delete', methods: ['DELETE'])]
