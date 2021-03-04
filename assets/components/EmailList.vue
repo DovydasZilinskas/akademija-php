@@ -4,31 +4,31 @@
       <span>Page: {{ current }} of {{ pageCount }}</span>
       <table>
         <tr>
-          <th>
+          <th><div class="input-search">
             <input
               id="typer"
               type="text"
               v-model="searchEmail"
               placeholder="Search email.."
-            />
+            /></div>
           </th>
-          <th>
+          <th><div class="input-search">
             <input
               id="typer"
               type="text"
               v-model="searchName"
               placeholder="Search name.."
-            />
+            /></div>
           </th>
-          <th>
+          <th><div class="input-search">
             <input
               id="typer"
               type="text"
               v-model="searchMessage"
               placeholder="Search message.."
-            />
+            /></div>
           </th>
-          <th class="input-date">
+          <th><div class="input-search">
             <input
               id="typer"
               type="text"
@@ -40,15 +40,15 @@
               type="text"
               v-model="searchDateTo"
               placeholder="Date to"
-            />
+            /></div>
           </th>
           <th></th>
         </tr>
         <tr>
-          <th>Email</th>
-          <th>Full Name</th>
-          <th>Message</th>
-          <th>Creation Date</th>
+          <th><div class="title-flex">Email<a href="#" class="sort" @click="sort('email')">↕</a></div></th>
+          <th><div class="title-flex">Full Name<a href="#" class="sort" @click="sort('name')">↕</a></div></th>
+          <th><div class="title-flex">Message<a href="#" class="sort" @click="sort('message')">↕</a></div></th>
+          <th><div class="title-flex">Creation Date<a href="#" class="sort" @click="sort('createdAt')">↕</a></div></th>
           <th>Actions</th>
         </tr>
         <tr v-for="item in paginated" :key="item.id">
@@ -88,6 +88,14 @@ export default class EmailList extends Vue {
   loaded = false;
   pageCount = "";
   timeout = null;
+  orderby = "";
+  order = "desc";
+
+  sort(e) {
+    this.orderby = e;
+    this.order = this.order === "desc" ? "asc" : "desc";
+    this.getEmails();
+  }
 
   checkTyper() {
     const typer = document.getElementById("typer");
@@ -105,16 +113,13 @@ export default class EmailList extends Vue {
     fetch(
       "/getemail?page=" +
         this.current +
-        "&name=" +
-        this.searchName +
-        "&email=" +
-        this.searchEmail +
-        "&message=" +
-        this.searchMessage
-      // "&datefrom=" +
-      // this.searchDateFrom +
-      // "&dateto=" +
-      // this.searchDateTo
+        (this.searchName == "" ? "" : "&name=" + this.searchName) +
+        (this.searchEmail == "" ? "" : "&email=" + this.searchEmail) +
+        (this.searchMessage == "" ? "" : "&message=" + this.searchMessage) +
+        (this.searchDateFrom == "" ? "" : "&datefrom=" + this.searchDateFrom) +
+        (this.searchDateTo == "" ? "" : "&dateto=" + this.searchDateTo) +
+        (this.orderby == "" ? "" : "&orderby=" + this.orderby) +
+        (this.order == "" ? "" : "&order=" + this.order)
     )
       .then(r =>
         r
@@ -160,11 +165,12 @@ export default class EmailList extends Vue {
     this.getEmails();
     this.loaded = false;
   }
-
   get paginated() {
     return this.data;
   }
-
+  get searchDateFrom() {
+    return this.$store.getters.getCurrentSearchDateFrom;
+  }
   get searchName() {
     return this.$store.getters.getCurrentSearchName;
   }
@@ -173,9 +179,6 @@ export default class EmailList extends Vue {
   }
   get searchMessage() {
     return this.$store.getters.getCurrentSearchMessage;
-  }
-  get searchDateFrom() {
-    return this.$store.getters.getCurrentDateFrom;
   }
   get searchDateTo() {
     return this.$store.getters.getCurrentSearchDateTo;
@@ -224,6 +227,29 @@ nav a {
 .ifloaded {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.sort {
+  color: #595143;
+  text-decoration: none;
+  font-size: 1.4em;
+}
+
+.title-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+input {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.input-search {
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 </style>

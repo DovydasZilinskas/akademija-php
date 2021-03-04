@@ -39,7 +39,8 @@ class EmailListRepository extends ServiceEntityRepository
                     $qp->andWhere("a.createdAt >= '$value'");
                     break;
                 case 'dateto':
-                    $qp->andWhere("a.createdAt <= '$value'");
+                    $default = $value == "" ? "now" : $value;
+                    $qp->andWhere("a.createdAt <= '$default'");
                     break;
             }
         }

@@ -50,13 +50,6 @@ import { mapState } from "vuex";
     VueRecaptcha,
     Spinner
   }
-  // data() {
-  //   return {
-  //     name: this.$store.getters.getCurrentName,
-  //     emailMessage: this.$store.getters.getCurrentMessage,
-  //     email: this.$store.getters.getCurrentEmail
-  //   };
-  // }
 })
 export default class Contact extends Vue {
   error = false;
