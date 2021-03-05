@@ -4,51 +4,77 @@
       <span>Page: {{ current }} of {{ pageCount }}</span>
       <table>
         <tr>
-          <th><div class="input-search">
-            <input
-              id="typer"
-              type="text"
-              v-model="searchEmail"
-              placeholder="Search email.."
-            /></div>
+          <th>
+            <div class="input-search">
+              <input
+                id="typer"
+                type="text"
+                v-model="searchEmail"
+                placeholder="Search email.."
+              />
+            </div>
           </th>
-          <th><div class="input-search">
-            <input
-              id="typer"
-              type="text"
-              v-model="searchName"
-              placeholder="Search name.."
-            /></div>
+          <th>
+            <div class="input-search">
+              <input
+                id="typer"
+                type="text"
+                v-model="searchName"
+                placeholder="Search name.."
+              />
+            </div>
           </th>
-          <th><div class="input-search">
-            <input
-              id="typer"
-              type="text"
-              v-model="searchMessage"
-              placeholder="Search message.."
-            /></div>
+          <th>
+            <div class="input-search">
+              <input
+                id="typer"
+                type="text"
+                v-model="searchMessage"
+                placeholder="Search message.."
+              />
+            </div>
           </th>
-          <th><div class="input-search">
-            <input
-              id="typer"
-              type="text"
-              v-model="searchDateFrom"
-              placeholder="Date from"
-            />
-            <input
-              id="typer"
-              type="text"
-              v-model="searchDateTo"
-              placeholder="Date to"
-            /></div>
+          <th>
+            <div class="input-search">
+              <input
+                id="typer"
+                type="text"
+                v-model="searchDateFrom"
+                placeholder="Date from"
+              />
+              <input
+                id="typer"
+                type="text"
+                v-model="searchDateTo"
+                placeholder="Date to"
+              />
+            </div>
           </th>
           <th></th>
         </tr>
         <tr>
-          <th><div class="title-flex">Email<a href="#" class="sort" @click="sort('email')">↕</a></div></th>
-          <th><div class="title-flex">Full Name<a href="#" class="sort" @click="sort('name')">↕</a></div></th>
-          <th><div class="title-flex">Message<a href="#" class="sort" @click="sort('message')">↕</a></div></th>
-          <th><div class="title-flex">Creation Date<a href="#" class="sort" @click="sort('createdAt')">↕</a></div></th>
+          <th>
+            <div class="title-flex">
+              Email<a href="#" class="sort" @click="sort('email')">↕</a>
+            </div>
+          </th>
+          <th>
+            <div class="title-flex">
+              Full Name<a href="#" class="sort" @click="sort('name')">↕</a>
+            </div>
+          </th>
+          <th>
+            <div class="title-flex">
+              Message<a href="#" class="sort" @click="sort('message')">↕</a>
+            </div>
+          </th>
+          <th>
+            <div class="title-flex">
+              Creation Date<a href="#" class="sort" @click="sort('createdAt')"
+                >↕</a
+              >
+            </div>
+          </th>
           <th>Actions</th>
         </tr>
         <tr v-for="item in paginated" :key="item.id">
@@ -90,6 +116,7 @@ export default class EmailList extends Vue {
   timeout = null;
   orderby = "";
   order = "desc";
+  polling = null;
 
   sort(e) {
     this.orderby = e;
@@ -110,32 +137,40 @@ export default class EmailList extends Vue {
   }
 
   getEmails() {
-    fetch(
-      "/getemail?page=" +
-        this.current +
-        (this.searchName == "" ? "" : "&name=" + this.searchName) +
-        (this.searchEmail == "" ? "" : "&email=" + this.searchEmail) +
-        (this.searchMessage == "" ? "" : "&message=" + this.searchMessage) +
-        (this.searchDateFrom == "" ? "" : "&datefrom=" + this.searchDateFrom) +
-        (this.searchDateTo == "" ? "" : "&dateto=" + this.searchDateTo) +
-        (this.orderby == "" ? "" : "&orderby=" + this.orderby) +
-        (this.order == "" ? "" : "&order=" + this.order)
-    )
-      .then(r =>
-        r
-          .json()
-          .then(data => ({ total: r.headers.get("totalItems"), body: data }))
+    this.polling = setInterval(() => {
+      fetch(
+        "/getemail?page=" +
+          this.current +
+          (this.searchName == "" ? "" : "&name=" + this.searchName) +
+          (this.searchEmail == "" ? "" : "&email=" + this.searchEmail) +
+          (this.searchMessage == "" ? "" : "&message=" + this.searchMessage) +
+          (this.searchDateFrom == ""
+            ? ""
+            : "&datefrom=" + this.searchDateFrom) +
+          (this.searchDateTo == "" ? "" : "&dateto=" + this.searchDateTo) +
+          (this.orderby == "" ? "" : "&orderby=" + this.orderby) +
+          (this.order == "" ? "" : "&order=" + this.order)
       )
-      .then(obj => {
-        this.data = obj.body;
-        this.loaded = true;
-        this.pageCount = Math.ceil(obj.total / this.pageSize);
-      })
-      .catch(error => console.log(error));
+        .then(r =>
+          r
+            .json()
+            .then(data => ({ total: r.headers.get("totalItems"), body: data }))
+        )
+        .then(obj => {
+          this.data = obj.body;
+          this.loaded = true;
+          this.pageCount = Math.ceil(obj.total / this.pageSize);
+        })
+        .catch(error => console.log(error));
+    }, 5000);
   }
 
   mounted() {
     this.getEmails();
+  }
+
+  beforeDestroy() {
+    clearInterval(this.polling);
   }
 
   deleteItem(item) {

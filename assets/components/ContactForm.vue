@@ -112,9 +112,9 @@ export default class Contact extends Vue {
           this.error = true;
           this.$store.commit("success", Object.values(res));
           this.notificationsMsg = this.$store.getters.messageToDisplay;
-          // this.email = "";
-          // this.name = "";
-          // this.emailMessage = "";
+          this.email = "";
+          this.name = "";
+          this.emailMessage = "";
           this.type = "";
           this.spin = false;
         }
