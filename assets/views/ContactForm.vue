@@ -39,17 +39,16 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
-import NotificationsMsg from "./Notification";
+import NotificationsMsg from "../components/Notification";
 import VueRecaptcha from "vue-recaptcha";
-import Spinner from "./Spinner";
-import { mapState } from "vuex";
+import Spinner from "../components/Spinner";
 
 @Component({
   components: {
     NotificationsMsg,
     VueRecaptcha,
-    Spinner
-  }
+    Spinner,
+  },
 })
 export default class Contact extends Vue {
   error = false;
@@ -91,11 +90,11 @@ export default class Contact extends Vue {
         fullName: this.$store.getters.getCurrentName,
         email: this.$store.getters.getCurrentEmail,
         message: this.$store.getters.getCurrentMessage,
-        captcha: response
-      })
+        captcha: response,
+      }),
     })
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         if (Object.keys(res).length > 1) {
           this.error = true;
           this.$store.commit("error", "blank.fields");
@@ -119,7 +118,7 @@ export default class Contact extends Vue {
           this.spin = false;
         }
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }
   onCaptchaExpired() {
     this.$refs.invisibleRecaptcha.reset();

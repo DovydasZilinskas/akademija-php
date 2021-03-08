@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import EmailList from './components/EmailList';
+import EmailList from './views/EmailList';
 import './styles/app.css';
 import store from './store';
 

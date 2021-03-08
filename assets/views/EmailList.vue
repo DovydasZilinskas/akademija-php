@@ -124,8 +124,8 @@
 <script>
 import Vue from "vue";
 import Component from "vue-class-component";
-import Spinner from "./Spinner";
-import SpinnerSmall from "./SpinnerSmall";
+import Spinner from "../components/Spinner";
+import SpinnerSmall from "../components/SpinnerSmall";
 
 @Component({
   components: { Spinner, SpinnerSmall },
@@ -138,6 +138,7 @@ export default class EmailList extends Vue {
   order = "";
   polling = null;
   search = false;
+
   columns = [
     { name: "name", order: 1 },
     { name: "email", order: 1 },
