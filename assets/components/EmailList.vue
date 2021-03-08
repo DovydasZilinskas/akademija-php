@@ -1,7 +1,10 @@
 <template>
   <div class="email-container">
     <div class="ifloaded" v-if="loaded">
-      <span>Page: {{ current }} of {{ pageCount }}</span>
+      <div class="page-count">
+        <SpinnerSmall :load="search" />
+        <span v-if="!search">Page: {{ current }} of {{ pageCount }}</span>
+      </div>
       <table>
         <tr>
           <th>
@@ -55,24 +58,42 @@
         <tr>
           <th>
             <div class="title-flex">
-              Email<a href="#" class="sort" @click="sort('email')">↕</a>
+              Email<a
+                href="#"
+                class="sort"
+                :class="columns[1].order > 0 ? 'asc' : 'desc'"
+                @click="sort('email')"
+              ></a>
             </div>
           </th>
           <th>
             <div class="title-flex">
-              Full Name<a href="#" class="sort" @click="sort('name')">↕</a>
+              Full Name<a
+                href="#"
+                class="sort"
+                :class="columns[0].order > 0 ? 'asc' : 'desc'"
+                @click="sort('name')"
+              ></a>
             </div>
           </th>
           <th>
             <div class="title-flex">
-              Message<a href="#" class="sort" @click="sort('message')">↕</a>
+              Message<a
+                href="#"
+                class="sort"
+                :class="columns[2].order > 0 ? 'asc' : 'desc'"
+                @click="sort('message')"
+              ></a>
             </div>
           </th>
           <th>
             <div class="title-flex">
-              Creation Date<a href="#" class="sort" @click="sort('createdAt')"
-                >↕</a
-              >
+              Creation Date<a
+                href="#"
+                class="sort"
+                :class="columns[3].order > 0 ? 'asc' : 'desc'"
+                @click="sort('createdAt')"
+              ></a>
             </div>
           </th>
           <th>Actions</th>
@@ -90,6 +111,7 @@
       </table>
       <nav>
         <a @click="prev()">Prev</a>
+        <input type="text" v-model="current" placeholder="Jump to page" />
         <a @click="next()">Next</a>
       </nav>
     </div>
@@ -103,24 +125,32 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import Spinner from "./Spinner";
+import SpinnerSmall from "./SpinnerSmall";
 
 @Component({
-  components: { Spinner }
+  components: { Spinner, SpinnerSmall },
 })
 export default class EmailList extends Vue {
-  current = 1;
-  pageSize = 10;
   data = [];
   loaded = false;
-  pageCount = "";
   timeout = null;
   orderby = "";
-  order = "desc";
+  order = "";
   polling = null;
+  search = false;
+  columns = [
+    { name: "name", order: 1 },
+    { name: "email", order: 1 },
+    { name: "message", order: 1 },
+    { name: "createdAt", order: 1 },
+  ];
 
   sort(e) {
+    const index = this.columns.map((x) => x.name).indexOf(e);
     this.orderby = e;
-    this.order = this.order === "desc" ? "asc" : "desc";
+    this.columns[index].order = this.columns[index].order * -1;
+    this.order =
+      this.order === "" ? "asc" : this.order === "desc" ? "asc" : "desc";
     this.getEmails();
   }
 
@@ -132,40 +162,39 @@ export default class EmailList extends Vue {
   handleKeyUp() {
     window.clearTimeout(this.timeout);
     this.timeout = window.setTimeout(() => {
+      this.search = true;
       this.getEmails();
     }, 1000);
   }
 
   getEmails() {
-    this.polling = setInterval(() => {
-      fetch(
-        "/getemail?page=" +
-          this.current +
-          (this.searchName == "" ? "" : "&name=" + this.searchName) +
-          (this.searchEmail == "" ? "" : "&email=" + this.searchEmail) +
-          (this.searchMessage == "" ? "" : "&message=" + this.searchMessage) +
-          (this.searchDateFrom == ""
-            ? ""
-            : "&datefrom=" + this.searchDateFrom) +
-          (this.searchDateTo == "" ? "" : "&dateto=" + this.searchDateTo) +
-          (this.orderby == "" ? "" : "&orderby=" + this.orderby) +
-          (this.order == "" ? "" : "&order=" + this.order)
+    fetch(
+      "/getemail?page=" +
+        this.current +
+        (this.searchName == "" ? "" : "&name=" + this.searchName) +
+        (this.searchEmail == "" ? "" : "&email=" + this.searchEmail) +
+        (this.searchMessage == "" ? "" : "&message=" + this.searchMessage) +
+        (this.searchDateFrom == "" ? "" : "&datefrom=" + this.searchDateFrom) +
+        (this.searchDateTo == "" ? "" : "&dateto=" + this.searchDateTo) +
+        (this.orderby == "" ? "" : "&orderby=" + this.orderby) +
+        (this.order == "" ? "" : "&order=" + this.order)
+    )
+      .then((r) =>
+        r.json().then((data) => ({
+          total: r.headers.get("totalItems"),
+          body: data,
+        }))
       )
-        .then(r =>
-          r
-            .json()
-            .then(data => ({ total: r.headers.get("totalItems"), body: data }))
-        )
-        .then(obj => {
-          this.data = obj.body;
-          this.loaded = true;
-          this.pageCount = Math.ceil(obj.total / this.pageSize);
-        })
-        .catch(error => console.log(error));
-    }, 5000);
+      .then((obj) => {
+        this.data = obj.body;
+        this.loaded = true;
+        this.search = false;
+        this.pageCount = Math.ceil(obj.total / 10);
+      })
+      .catch((error) => console.log(error));
   }
 
-  mounted() {
+  created() {
     this.getEmails();
   }
 
@@ -176,12 +205,16 @@ export default class EmailList extends Vue {
   deleteItem(item) {
     if (confirm("Are you sure you want to delete this item?")) {
       fetch("/deleteemail/" + item.id, {
-        method: "DELETE"
+        method: "DELETE",
       })
         .then(() => {
-          this.data.splice(this.data.map(item => item.id).indexOf(item.id), 1);
+          this.data.splice(
+            this.data.map((item) => item.id).indexOf(item.id),
+            1
+          );
+          this.getEmails();
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     } else {
       console.log("No delete");
     }
@@ -238,6 +271,19 @@ export default class EmailList extends Vue {
     this.$store.commit("updateSearchDateTo", value);
     this.checkTyper();
   }
+  get current() {
+    return this.$store.getters.getCurrentPage;
+  }
+  set current(value) {
+    this.$store.commit("updatePage", value);
+    this.checkTyper();
+  }
+  set pageCount(value) {
+    this.$store.commit("updatePageCount", value);
+  }
+  get pageCount() {
+    return this.$store.getters.getPageCount;
+  }
 }
 </script>
 
@@ -284,7 +330,18 @@ input {
 
 .input-search {
   display: flex;
-  justify-content: center;
   align-items: center;
+}
+
+.page-count {
+  height: 80px;
+}
+
+.asc:before {
+  content: "\2191";
+}
+
+.desc:before {
+  content: "\2193";
 }
 </style>
