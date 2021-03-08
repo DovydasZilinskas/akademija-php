@@ -168,18 +168,38 @@ export default class EmailList extends Vue {
     }, 1000);
   }
 
+  // "/getemail?page=" +
+  //   this.current +
+  //   (this.searchName == "" ? "" : "&name=" + this.searchName) +
+  //   (this.searchEmail == "" ? "" : "&email=" + this.searchEmail) +
+  //   (this.searchMessage == "" ? "" : "&message=" + this.searchMessage) +
+  //   (this.searchDateFrom == "" ? "" : "&datefrom=" + this.searchDateFrom) +
+  //   (this.searchDateTo == "" ? "" : "&dateto=" + this.searchDateTo) +
+  //   (this.orderby == "" ? "" : "&orderby=" + this.orderby) +
+  //   (this.order == "" ? "" : "&order=" + this.order)
+
+  getUrls() {
+    const searchParamKeys = [
+      { key: "page", value: this.current },
+      { key: "name", value: this.searchName },
+      { key: "email", value: this.searchEmail },
+      { key: "message", value: this.searchMessage },
+      { key: "datefrom", value: this.searchDateFrom },
+      { key: "dateto", value: this.searchDateTo },
+      { key: "orderby", value: this.orderby },
+      { key: "order", value: this.order },
+    ];
+    const params = new URLSearchParams();
+    searchParamKeys.forEach((e) => {
+      if (e.value != "") {
+        params.append(e.key, e.value);
+      }
+    });
+    return params.toString();
+  }
+
   getEmails() {
-    fetch(
-      "/getemail?page=" +
-        this.current +
-        (this.searchName == "" ? "" : "&name=" + this.searchName) +
-        (this.searchEmail == "" ? "" : "&email=" + this.searchEmail) +
-        (this.searchMessage == "" ? "" : "&message=" + this.searchMessage) +
-        (this.searchDateFrom == "" ? "" : "&datefrom=" + this.searchDateFrom) +
-        (this.searchDateTo == "" ? "" : "&dateto=" + this.searchDateTo) +
-        (this.orderby == "" ? "" : "&orderby=" + this.orderby) +
-        (this.order == "" ? "" : "&order=" + this.order)
-    )
+    fetch("/getemail?" + this.getUrls())
       .then((r) =>
         r.json().then((data) => ({
           total: r.headers.get("totalItems"),
@@ -224,14 +244,12 @@ export default class EmailList extends Vue {
   prev() {
     if (this.current >= 2) {
       this.current--;
-      this.getEmails();
       this.loaded = false;
     }
   }
 
   next() {
     this.current++;
-    this.getEmails();
     this.loaded = false;
   }
   get paginated() {
