@@ -15,8 +15,7 @@ class UserFixtures extends Fixture
         $user = new UserProfile();
         $user
             ->setAge('30')
-            ->setDescription('
-            Started as a sound tech now I am going through developer career and leaving music as a side hobby and passion.')
+            ->setDescription('Started as a sound tech now I am going through developer career and leaving music as a side hobby and passion.')
             ->setEmail('dovydas.zilinsk@gmail.com')
             ->setGithub('@github: DovydasZilinskas')
             ->setLinkedin('@linkedin: d-zilinskas')

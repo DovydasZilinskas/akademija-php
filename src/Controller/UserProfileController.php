@@ -20,7 +20,7 @@ class UserProfileController extends AbstractController
     public function index(UserProfileRepository $userProfileRepository, WorkExperienceRepository $workExperienceRepository, SchoolRepository $schoolRepository): Response
     {
         return $this->render('user_profile/index.html.twig', [
-            'user_profiles' => $userProfileRepository->findOneBy(['id' => 1]),
+            'user_profiles' => $userProfileRepository->findOneBy(['id' => 19]),
             'work_experiences' => $workExperienceRepository->findAll(),
             'schools' => $schoolRepository->findAll(),
         ]);

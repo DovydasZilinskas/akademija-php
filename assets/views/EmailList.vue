@@ -3,7 +3,10 @@
     <div class="ifloaded" v-if="loaded">
       <div class="page-count">
         <SpinnerSmall :load="search" />
-        <span v-if="!search">Page: {{ current }} of {{ pageCount }}</span>
+        <span v-if="!search && pageCount > 0"
+          >Page: {{ current }} of {{ pageCount }}</span
+        >
+        <span v-if="!search && pageCount === 0">No data found</span>
       </div>
       <table>
         <tr>
@@ -136,8 +139,9 @@ export default class EmailList extends Vue {
   timeout = null;
   orderby = "";
   order = "";
-  polling = null;
   search = false;
+  polling = 1;
+  pollingKeys = [];
 
   columns = [
     { name: "name", order: 1 },
@@ -149,10 +153,10 @@ export default class EmailList extends Vue {
   sort(e) {
     const index = this.columns.map((x) => x.name).indexOf(e);
     this.orderby = e;
+    this.search = true;
     this.columns[index].order = this.columns[index].order * -1;
     this.order =
       this.order === "" ? "asc" : this.order === "desc" ? "asc" : "desc";
-    this.getEmails();
   }
 
   checkTyper() {
@@ -161,22 +165,12 @@ export default class EmailList extends Vue {
   }
 
   handleKeyUp() {
-    window.clearTimeout(this.timeout);
-    this.timeout = window.setTimeout(() => {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      // clearTimeout(this.polling);
       this.search = true;
-      this.getEmails();
     }, 1000);
   }
-
-  // "/getemail?page=" +
-  //   this.current +
-  //   (this.searchName == "" ? "" : "&name=" + this.searchName) +
-  //   (this.searchEmail == "" ? "" : "&email=" + this.searchEmail) +
-  //   (this.searchMessage == "" ? "" : "&message=" + this.searchMessage) +
-  //   (this.searchDateFrom == "" ? "" : "&datefrom=" + this.searchDateFrom) +
-  //   (this.searchDateTo == "" ? "" : "&dateto=" + this.searchDateTo) +
-  //   (this.orderby == "" ? "" : "&orderby=" + this.orderby) +
-  //   (this.order == "" ? "" : "&order=" + this.order)
 
   getUrls() {
     const searchParamKeys = [
@@ -199,7 +193,7 @@ export default class EmailList extends Vue {
   }
 
   getEmails() {
-    fetch("/getemail?" + this.getUrls())
+    fetch("/getemail?" + this.getUrls(), { signal: this.signal })
       .then((r) =>
         r.json().then((data) => ({
           total: r.headers.get("totalItems"),
@@ -209,18 +203,21 @@ export default class EmailList extends Vue {
       .then((obj) => {
         this.data = obj.body;
         this.loaded = true;
-        this.search = false;
         this.pageCount = Math.ceil(obj.total / 10);
+        this.pollingKeys.push(this.polling);
+        const pollingDiff =
+          this.pollingKeys[this.pollingKeys.length - 1] -
+          this.pollingKeys[this.pollingKeys.length - 2];
+        if (pollingDiff > 2) this.search = false;
+        this.polling = setTimeout(() => this.getEmails(), 0);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  created() {
+  mounted() {
     this.getEmails();
-  }
-
-  beforeDestroy() {
-    clearInterval(this.polling);
   }
 
   deleteItem(item) {
@@ -233,6 +230,7 @@ export default class EmailList extends Vue {
             this.data.map((item) => item.id).indexOf(item.id),
             1
           );
+          this.search = true;
           this.getEmails();
         })
         .catch((error) => console.log(error));
