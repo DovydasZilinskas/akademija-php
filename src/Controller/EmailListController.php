@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\EmailList;
-use Doctrine\ORM\Mapping\Id;
 use App\Repository\EmailListRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,6 +32,7 @@ class EmailListController extends AbstractController
         $orderBy = $request->query->get('orderby', 'createdAt');
         $order = $request->query->get('order', 'DESC');
         $page = $request->query->get('page', '1');
+        $pageSize = 10;
 
         /**
          * @var EmailListRepository
@@ -41,20 +40,13 @@ class EmailListController extends AbstractController
         $repo = $em->getRepository(EmailList::class);
 
         if (count($search) == 0) {
-            $data = $repo->getAllFiltered($orderBy, $order);
+            $data = $repo->getAllFiltered($orderBy, $order, $pageSize, $page);
         } else {
-            $data = $repo->getSearchValues($search, $orderBy, $order);
+            $data = $repo->getSearchValues($search, $orderBy, $order, $pageSize, $page);
         }
 
-        $pageSize = 10;
-        $paginator = new Paginator($data);
-        $totalItems = count($paginator);
-        $paginator
-            ->getQuery()
-            ->setFirstResult($pageSize * ($page-1))
-            ->setMaxResults($pageSize);
-
-        $paginated = $serializerInterface->serialize($paginator, 'json');
+        $paginated = $serializerInterface->serialize($data, 'json');
+        $totalItems = count($data);
 
         return new Response($paginated, 200, ['Content-Type' => 'application/json', 'totalItems' => $totalItems]);
     }
