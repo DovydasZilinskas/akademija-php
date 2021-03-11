@@ -21,7 +21,7 @@ class EmailListRepository extends ServiceEntityRepository
         parent::__construct($registry, EmailList::class);
     }
 
-    public function getSearchValues(array $search, $orderBy, $order, $pageSize, $page)
+    public function getSearchValues(array $search, $orderBy, $order)
     {
         $qp = $this->createQueryBuilder('a');
         foreach ($search as $field => $value) {
@@ -45,20 +45,16 @@ class EmailListRepository extends ServiceEntityRepository
             }
         }
         return $qp
-            ->orderBy('a.'.$orderBy, $order)
-            ->setMaxResults($pageSize)
-            ->setFirstResult($pageSize * ($page - 1))
-            ->getQuery()
-            ->getResult();
+            ->orderBy('a.'.$orderBy, $order);
     }
 
-    public function getAllFiltered($orderBy, $order, $pageSize, $page)
-    {
-        return $this->createQueryBuilder('a')
-            ->orderBy('a.'.$orderBy, $order)
-            ->setMaxResults($pageSize)
-            ->setFirstResult($pageSize * ($page - 1))
-            ->getQuery()
-            ->getResult();
-    }
+    // public function getAllFiltered($orderBy, $order, $pageSize, $page)
+    // {
+    //     return $this->createQueryBuilder('a')
+    //         ->orderBy('a.'.$orderBy, $order)
+    //         ->setMaxResults($pageSize)
+    //         ->setFirstResult($pageSize * ($page - 1))
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 }

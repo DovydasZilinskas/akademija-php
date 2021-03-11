@@ -209,7 +209,6 @@ export default class EmailList extends Vue {
           this.pollingKeys[this.pollingKeys.length - 1] -
           this.pollingKeys[this.pollingKeys.length - 2];
         if (pollingDiff > 2) this.search = false;
-        console.log(pollingDiff);
         this.polling = setTimeout(() => this.getEmails(), 0);
       })
       .catch((error) => {
