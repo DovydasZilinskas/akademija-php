@@ -155,6 +155,7 @@ export default class EmailList extends Vue {
     this.orderby = e;
     this.search = true;
     this.columns[index].order = this.columns[index].order * -1;
+    this.polling = 3;
     this.order =
       this.order === "" ? "asc" : this.order === "desc" ? "asc" : "desc";
   }
@@ -167,7 +168,6 @@ export default class EmailList extends Vue {
   handleKeyUp() {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      // clearTimeout(this.polling);
       this.search = true;
     }, 1000);
   }
@@ -209,6 +209,7 @@ export default class EmailList extends Vue {
           this.pollingKeys[this.pollingKeys.length - 1] -
           this.pollingKeys[this.pollingKeys.length - 2];
         if (pollingDiff > 2) this.search = false;
+        console.log(pollingDiff);
         this.polling = setTimeout(() => this.getEmails(), 0);
       })
       .catch((error) => {
