@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\EmailList;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ObjectManager;
 
 class EmailFixtures extends Fixture
@@ -16,9 +15,9 @@ class EmailFixtures extends Fixture
         for ($i = 1; $i < 1000000; $i++) {
             $emails = new EmailList();
             $emails
-                ->setEmail('test@email')
+                ->setEmail('test@email' . $i)
                 ->setMessage('test message' . $i)
-                ->setName('test' . $i);
+                ->setName('name' . mt_rand(1, 1000000));
                 $ob->persist($emails);
             if (($i % $batchSize) === 0) {
                 $ob->flush();
