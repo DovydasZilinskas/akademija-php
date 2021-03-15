@@ -209,7 +209,7 @@ export default class EmailList extends Vue {
           this.pollingKeys[this.pollingKeys.length - 1] -
           this.pollingKeys[this.pollingKeys.length - 2];
         if (pollingDiff > 2) this.search = false;
-        this.polling = setTimeout(() => this.getEmails(), 0);
+        this.polling = setTimeout(() => this.getEmails(), 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -222,6 +222,7 @@ export default class EmailList extends Vue {
 
   deleteItem(item) {
     if (confirm("Are you sure you want to delete this item?")) {
+      this.search = true;
       fetch("/deleteemail/" + item.id, {
         method: "DELETE",
       })
@@ -230,8 +231,6 @@ export default class EmailList extends Vue {
             this.data.map((item) => item.id).indexOf(item.id),
             1
           );
-          this.search = true;
-          this.getEmails();
         })
         .catch((error) => console.log(error));
     } else {
