@@ -40,13 +40,9 @@ class EmailListController extends AbstractController
         $repo = $em->getRepository(EmailList::class);
 
         $data = $repo
-            ->getSearchValues($search, $orderBy, $order)
-            ->setMaxResults($pageSize)
-            ->setFirstResult($pageSize * ($page - 1))
-            ->getQuery()
-            ->getResult();
+            ->getSearchValues($search, $orderBy, $order, $pageSize, $page);
 
-        $totalItems = $repo->getSearchValues($search, $orderBy, $order)->select('COUNT(a)')->getQuery()->getSingleScalarResult();
+        $totalItems = $repo->getItemCount($search);
 
         $paginated = $serializerInterface->serialize($data, 'json');
 

@@ -21,7 +21,7 @@ class EmailListRepository extends ServiceEntityRepository
         parent::__construct($registry, EmailList::class);
     }
 
-    public function getSearchValues(array $search, $orderBy, $order)
+    public function getSearchValues(array $search, $orderBy, $order, $pageSize, $page)
     {
         $qp = $this->createQueryBuilder('a');
         foreach ($search as $field => $value) {
@@ -45,7 +45,40 @@ class EmailListRepository extends ServiceEntityRepository
             }
         }
         return $qp
-            ->orderBy('a.'.$orderBy, $order);
+            ->orderBy('a.'.$orderBy, $order)
+            ->setMaxResults($pageSize)
+            ->setFirstResult($pageSize * ($page - 1))
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getItemCount(array $search)
+    {
+        $qp = $this->createQueryBuilder('a');
+        foreach ($search as $field => $value) {
+            switch ($field) {
+                case 'name':
+                    $qp->andWhere("a.name LIKE '%$value%'");
+                    break;
+                case 'email':
+                    $qp->andWhere("a.email LIKE '%$value%'");
+                    break;
+                case 'message':
+                    $qp->andWhere("a.message LIKE '%$value%'");
+                    break;
+                case 'datefrom':
+                    $qp->andWhere("a.createdAt >= '$value'");
+                    break;
+                case 'dateto':
+                    $default = $value == "" ? "now" : $value;
+                    $qp->andWhere("a.createdAt <= '$default'");
+                    break;
+            }
+        }
+        return $qp
+            ->select('COUNT(a)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     // public function getAllFiltered($orderBy, $order, $pageSize, $page)
