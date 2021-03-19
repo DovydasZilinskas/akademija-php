@@ -9,108 +9,112 @@
         <span v-if="!search && pageCount === 0">No data found</span>
       </div>
       <table>
-        <tr>
-          <th>
-            <div class="input-search">
-              <input
-                id="typer"
-                type="text"
-                v-model="searchEmail"
-                placeholder="Search email.."
-              />
-            </div>
-          </th>
-          <th>
-            <div class="input-search">
-              <input
-                id="typer"
-                type="text"
-                v-model="searchName"
-                placeholder="Search name.."
-              />
-            </div>
-          </th>
-          <th>
-            <div class="input-search">
-              <input
-                id="typer"
-                type="text"
-                v-model="searchMessage"
-                placeholder="Search message.."
-              />
-            </div>
-          </th>
-          <th>
-            <div class="input-search">
-              <input
-                id="typer"
-                type="text"
-                v-model="searchDateFrom"
-                placeholder="Date from"
-              />
-              <input
-                id="typer"
-                type="text"
-                v-model="searchDateTo"
-                placeholder="Date to"
-              />
-            </div>
-          </th>
-          <th></th>
-        </tr>
-        <tr>
-          <th>
-            <div class="title-flex">
-              Email<a
-                href="#"
-                class="sort"
-                :class="columns[1].order > 0 ? 'asc' : 'desc'"
-                @click="sort('email')"
-              ></a>
-            </div>
-          </th>
-          <th>
-            <div class="title-flex">
-              Full Name<a
-                href="#"
-                class="sort"
-                :class="columns[0].order > 0 ? 'asc' : 'desc'"
-                @click="sort('name')"
-              ></a>
-            </div>
-          </th>
-          <th>
-            <div class="title-flex">
-              Message<a
-                href="#"
-                class="sort"
-                :class="columns[2].order > 0 ? 'asc' : 'desc'"
-                @click="sort('message')"
-              ></a>
-            </div>
-          </th>
-          <th>
-            <div class="title-flex">
-              Creation Date<a
-                href="#"
-                class="sort"
-                :class="columns[3].order > 0 ? 'asc' : 'desc'"
-                @click="sort('createdAt')"
-              ></a>
-            </div>
-          </th>
-          <th>Actions</th>
-        </tr>
-        <tr v-for="item in paginated" :key="item.id">
-          <td>{{ item.email }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.message }}</td>
-          <td>
-            {{ item.createdAt.slice(0, 10) }}
-            {{ item.createdAt.slice(11, 19) }}
-          </td>
-          <td><button @click.prevent="deleteItem(item)">Delete</button></td>
-        </tr>
+        <thead>
+          <tr>
+            <th>
+              <div class="input-search">
+                <input
+                  id="typer"
+                  type="text"
+                  v-model="searchEmail"
+                  placeholder="Search email.."
+                />
+              </div>
+            </th>
+            <th>
+              <div class="input-search">
+                <input
+                  id="typer"
+                  type="text"
+                  v-model="searchName"
+                  placeholder="Search name.."
+                />
+              </div>
+            </th>
+            <th>
+              <div class="input-search">
+                <input
+                  id="typer"
+                  type="text"
+                  v-model="searchMessage"
+                  placeholder="Search message.."
+                />
+              </div>
+            </th>
+            <th>
+              <div class="input-search">
+                <input
+                  id="typer"
+                  type="text"
+                  v-model="searchDateFrom"
+                  placeholder="Date from"
+                />
+                <input
+                  id="typer"
+                  type="text"
+                  v-model="searchDateTo"
+                  placeholder="Date to"
+                />
+              </div>
+            </th>
+            <th></th>
+          </tr>
+          <tr>
+            <th>
+              <div class="title-flex">
+                Email<a
+                  href="#"
+                  class="sort"
+                  :class="columns[1].order > 0 ? 'asc' : 'desc'"
+                  @click="sort('email')"
+                ></a>
+              </div>
+            </th>
+            <th>
+              <div class="title-flex">
+                Full Name<a
+                  href="#"
+                  class="sort"
+                  :class="columns[0].order > 0 ? 'asc' : 'desc'"
+                  @click="sort('name')"
+                ></a>
+              </div>
+            </th>
+            <th>
+              <div class="title-flex">
+                Message<a
+                  href="#"
+                  class="sort"
+                  :class="columns[2].order > 0 ? 'asc' : 'desc'"
+                  @click="sort('message')"
+                ></a>
+              </div>
+            </th>
+            <th>
+              <div class="title-flex">
+                Creation Date<a
+                  href="#"
+                  class="sort"
+                  :class="columns[3].order > 0 ? 'asc' : 'desc'"
+                  @click="sort('createdAt')"
+                ></a>
+              </div>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in paginated" :key="item.id">
+            <td>{{ item.email }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.message }}</td>
+            <td>
+              {{ item.createdAt.slice(0, 10) }}
+              {{ item.createdAt.slice(11, 19) }}
+            </td>
+            <td><button @click.prevent="deleteItem(item)">Delete</button></td>
+          </tr>
+        </tbody>
       </table>
       <nav>
         <a @click="prev()">Prev</a>
