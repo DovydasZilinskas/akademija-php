@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App expected? 1`] = `
+<div class="container">
+  <h2>Contact me</h2>
+  <form><label>Full Name</label> <input type="text" maxlength="255" placeholder="Name"> <label>Email</label> <input type="email" maxlength="255" placeholder="Email"> <label>Message</label> <textarea maxlength="255" placeholder="Your text here..."></textarea>
+    <vue-recaptcha-stub sitekey="6Ld2MlUaAAAAABKG7ibjB5iZIXVDLBy_e5sSVLJq" size="invisible" recaptchascriptid="__RECAPTCHA_SCRIPT" recaptchahost="www.google.com" language="" class="g-recaptcha"></vue-recaptcha-stub> <button type="submit">Send</button>
+  </form>
+  <!---->
+  <spinner-stub></spinner-stub>
+</div>
+`;

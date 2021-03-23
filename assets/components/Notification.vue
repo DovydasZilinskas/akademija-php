@@ -6,18 +6,18 @@
 </template>
 
 <script>
-   export default {
-      name: 'Notification',
-      props: {
-        message: String,
-        type: String,
-      },
-      methods: {
-         close() {
-            this.$emit("displaynot");
-         },
-      },
-   }
+export default {
+  name: "Notification",
+  props: {
+    message: String,
+    type: String,
+  },
+  methods: {
+    close() {
+      this.$emit("displaynot");
+    },
+  },
+};
 </script>
 
 <style scoped>
