@@ -1,18 +1,21 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import App from '../views/ContactForm.vue';
+import Notification from '../components/Notification.vue';
 
 const localVue = createLocalVue();
 
 localVue.use(Vuex);
 
 describe('App', () => {
-  // let actions
   let getters;
   let store;
   let mutations;
 
   beforeEach(() => {
+    data = {
+      error: true,
+    };
     getters = {
       getCurrentName: () => 'Name',
       getCurrentEmail: () => 'Email',
@@ -20,6 +23,8 @@ describe('App', () => {
     };
     mutations = {
       updateName: () => 'updateName',
+      updateEmail: () => 'updateEmail',
+      updateEmailMessage: () => 'updateEmailMessage',
     };
     store = new Vuex.Store({
       getters,
@@ -27,22 +32,23 @@ describe('App', () => {
     });
   });
 
-  it('expected?', () => {
-    const wrapper = shallowMount(App, { store, localVue });
-    expect(wrapper).toMatchSnapshot();
+  it('leave blank fields', async () => {
+    const wrapper = mount(App, { store, localVue });
+    const name = wrapper.find('input[type="text"]');
+    const notification = wrapper.classes('notification');
+    const button = wrapper.find('button');
+
+    await name.setValue('Name');
+
+    console.log(notification);
+
+    await button.trigger('click');
+
+    expect(notification.text()).toContain('Please fill blank fields.');
   });
 
-  it('find name field', async () => {
-    const wrapper = shallowMount(App, { store, localVue });
-    const input = wrapper.find('input[type="text"]');
-    await input.setValue('Name');
-
-    const state = {
-      name: 'Name',
-    };
-
-    expect(wrapper.find('input[type="text"]').element.value).toBe(
-      getters.getCurrentName(state)
-    );
+  it('expected?', () => {
+    const wrapper = mount(App, { store, localVue });
+    expect(wrapper).toMatchSnapshot();
   });
 });

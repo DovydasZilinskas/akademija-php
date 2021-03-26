@@ -5,9 +5,9 @@ const puppeteer = require('puppeteer');
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
-  await page.goto('http://localhost/emails');
+  await page.goto('http://localhost/login');
   await page.screenshot({
-    path: './assets/puppet/screenshots/example.png',
+    path: './assets/puppet/screenshots/login.png',
   });
 
   await browser.close();
