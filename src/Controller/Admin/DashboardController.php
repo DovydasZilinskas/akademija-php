@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\EmailList;
 use App\Entity\School;
 use App\Entity\UserProfile;
 use App\Entity\WorkDuty;
@@ -30,7 +31,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             // the name visible to end users
-            ->setTitle('Dovydas Corp.')
+            ->setTitle('Dovydas Ž. Portfolio')
             // the domain used by default is 'messages'
             ->setTranslationDomain('my-custom-domain')
             // ->setTextDirection('ltr')
@@ -46,8 +47,9 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::section('Profile'),
             MenuItem::linkToCrud('Profile', 'fa fa-user', UserProfile::class),
-            MenuItem::linkToCrud('Work Experience', 'fa fa-tags', WorkExperience::class),
-            MenuItem::linkToCrud('Education', 'fa fa-tags', School::class),
+            MenuItem::linkToCrud('Work Experience', 'fa', WorkExperience::class),
+            MenuItem::linkToCrud('Education', 'fa', School::class),
+            MenuItem::linkToCrud('Emails', 'fa', EmailList::class),
         ];
     }
 }
